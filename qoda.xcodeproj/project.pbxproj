@@ -25,6 +25,18 @@
 		3079C26818A1C02700A228E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3079C24018A1C02600A228E2 /* UIKit.framework */; };
 		3079C27018A1C02700A228E2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3079C26E18A1C02700A228E2 /* InfoPlist.strings */; };
 		3079C27218A1C02700A228E2 /* qodaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3079C27118A1C02700A228E2 /* qodaTests.m */; };
+		3079C27D18A1C6C700A228E2 /* Tapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3079C27C18A1C6C700A228E2 /* Tapper.m */; };
+		3079C28518A1CB1400A228E2 /* orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C27F18A1CB1400A228E2 /* orange.png */; };
+		3079C28618A1CB1400A228E2 /* peach.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28018A1CB1400A228E2 /* peach.png */; };
+		3079C28718A1CB1400A228E2 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28118A1CB1400A228E2 /* apple.png */; };
+		3079C28818A1CB1400A228E2 /* cherry.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28218A1CB1400A228E2 /* cherry.png */; };
+		3079C28918A1CB1400A228E2 /* strawberry.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28318A1CB1400A228E2 /* strawberry.png */; };
+		3079C28A18A1CB1400A228E2 /* banana.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28418A1CB1400A228E2 /* banana.png */; };
+		3079C28F18A1CD8100A228E2 /* buttonPressedReverse.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28B18A1CD8100A228E2 /* buttonPressedReverse.png */; };
+		3079C29018A1CD8100A228E2 /* buttonRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28C18A1CD8100A228E2 /* buttonRed.png */; };
+		3079C29118A1CD8100A228E2 /* buttonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28D18A1CD8100A228E2 /* buttonPressed.png */; };
+		3079C29218A1CD8100A228E2 /* buttonGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28E18A1CD8100A228E2 /* buttonGreen.png */; };
+		3079C29518A1D60800A228E2 /* SKButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3079C29418A1D60800A228E2 /* SKButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +74,20 @@
 		3079C26D18A1C02700A228E2 /* qodaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "qodaTests-Info.plist"; sourceTree = "<group>"; };
 		3079C26F18A1C02700A228E2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3079C27118A1C02700A228E2 /* qodaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = qodaTests.m; sourceTree = "<group>"; };
+		3079C27B18A1C6C600A228E2 /* Tapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tapper.h; sourceTree = "<group>"; };
+		3079C27C18A1C6C700A228E2 /* Tapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tapper.m; sourceTree = "<group>"; };
+		3079C27F18A1CB1400A228E2 /* orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange.png; sourceTree = "<group>"; };
+		3079C28018A1CB1400A228E2 /* peach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = peach.png; sourceTree = "<group>"; };
+		3079C28118A1CB1400A228E2 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
+		3079C28218A1CB1400A228E2 /* cherry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cherry.png; sourceTree = "<group>"; };
+		3079C28318A1CB1400A228E2 /* strawberry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = strawberry.png; sourceTree = "<group>"; };
+		3079C28418A1CB1400A228E2 /* banana.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banana.png; sourceTree = "<group>"; };
+		3079C28B18A1CD8100A228E2 /* buttonPressedReverse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonPressedReverse.png; sourceTree = "<group>"; };
+		3079C28C18A1CD8100A228E2 /* buttonRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonRed.png; sourceTree = "<group>"; };
+		3079C28D18A1CD8100A228E2 /* buttonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonPressed.png; sourceTree = "<group>"; };
+		3079C28E18A1CD8100A228E2 /* buttonGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonGreen.png; sourceTree = "<group>"; };
+		3079C29318A1D60800A228E2 /* SKButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKButton.h; sourceTree = "<group>"; };
+		3079C29418A1D60800A228E2 /* SKButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +157,10 @@
 				3079C25718A1C02600A228E2 /* ViewController.m */,
 				3079C25918A1C02600A228E2 /* MyScene.h */,
 				3079C25A18A1C02600A228E2 /* MyScene.m */,
+				3079C29318A1D60800A228E2 /* SKButton.h */,
+				3079C29418A1D60800A228E2 /* SKButton.m */,
+				3079C27B18A1C6C600A228E2 /* Tapper.h */,
+				3079C27C18A1C6C700A228E2 /* Tapper.m */,
 				3079C25C18A1C02600A228E2 /* Spaceship.png */,
 				3079C25E18A1C02600A228E2 /* Images.xcassets */,
 				3079C24518A1C02600A228E2 /* Supporting Files */,
@@ -141,6 +171,7 @@
 		3079C24518A1C02600A228E2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3079C27E18A1CB0400A228E2 /* Sprites */,
 				3079C24618A1C02600A228E2 /* qoda-Info.plist */,
 				3079C24718A1C02600A228E2 /* InfoPlist.strings */,
 				3079C24A18A1C02600A228E2 /* main.m */,
@@ -165,6 +196,23 @@
 				3079C26E18A1C02700A228E2 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3079C27E18A1CB0400A228E2 /* Sprites */ = {
+			isa = PBXGroup;
+			children = (
+				3079C28B18A1CD8100A228E2 /* buttonPressedReverse.png */,
+				3079C28C18A1CD8100A228E2 /* buttonRed.png */,
+				3079C28D18A1CD8100A228E2 /* buttonPressed.png */,
+				3079C28E18A1CD8100A228E2 /* buttonGreen.png */,
+				3079C27F18A1CB1400A228E2 /* orange.png */,
+				3079C28018A1CB1400A228E2 /* peach.png */,
+				3079C28118A1CB1400A228E2 /* apple.png */,
+				3079C28218A1CB1400A228E2 /* cherry.png */,
+				3079C28318A1CB1400A228E2 /* strawberry.png */,
+				3079C28418A1CB1400A228E2 /* banana.png */,
+			);
+			name = Sprites;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,8 +294,18 @@
 				3079C25D18A1C02600A228E2 /* Spaceship.png in Resources */,
 				3079C25F18A1C02600A228E2 /* Images.xcassets in Resources */,
 				3079C25518A1C02600A228E2 /* Main_iPad.storyboard in Resources */,
+				3079C28818A1CB1400A228E2 /* cherry.png in Resources */,
 				3079C25218A1C02600A228E2 /* Main_iPhone.storyboard in Resources */,
+				3079C29218A1CD8100A228E2 /* buttonGreen.png in Resources */,
+				3079C28F18A1CD8100A228E2 /* buttonPressedReverse.png in Resources */,
 				3079C24918A1C02600A228E2 /* InfoPlist.strings in Resources */,
+				3079C28518A1CB1400A228E2 /* orange.png in Resources */,
+				3079C29018A1CD8100A228E2 /* buttonRed.png in Resources */,
+				3079C28718A1CB1400A228E2 /* apple.png in Resources */,
+				3079C29118A1CD8100A228E2 /* buttonPressed.png in Resources */,
+				3079C28918A1CB1400A228E2 /* strawberry.png in Resources */,
+				3079C28A18A1CB1400A228E2 /* banana.png in Resources */,
+				3079C28618A1CB1400A228E2 /* peach.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +328,8 @@
 				3079C25818A1C02600A228E2 /* ViewController.m in Sources */,
 				3079C24F18A1C02600A228E2 /* AppDelegate.m in Sources */,
 				3079C24B18A1C02600A228E2 /* main.m in Sources */,
+				3079C27D18A1C6C700A228E2 /* Tapper.m in Sources */,
+				3079C29518A1D60800A228E2 /* SKButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +550,7 @@
 				3079C27718A1C02700A228E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3079C27818A1C02700A228E2 /* Build configuration list for PBXNativeTarget "qodaTests" */ = {
 			isa = XCConfigurationList;
@@ -498,6 +559,7 @@
 				3079C27A18A1C02700A228E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
