@@ -25,7 +25,6 @@
 		3079C26818A1C02700A228E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3079C24018A1C02600A228E2 /* UIKit.framework */; };
 		3079C27018A1C02700A228E2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3079C26E18A1C02700A228E2 /* InfoPlist.strings */; };
 		3079C27218A1C02700A228E2 /* qodaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3079C27118A1C02700A228E2 /* qodaTests.m */; };
-		3079C27D18A1C6C700A228E2 /* Tapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3079C27C18A1C6C700A228E2 /* Tapper.m */; };
 		3079C28518A1CB1400A228E2 /* orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C27F18A1CB1400A228E2 /* orange.png */; };
 		3079C28618A1CB1400A228E2 /* peach.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28018A1CB1400A228E2 /* peach.png */; };
 		3079C28718A1CB1400A228E2 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 3079C28118A1CB1400A228E2 /* apple.png */; };
@@ -74,8 +73,6 @@
 		3079C26D18A1C02700A228E2 /* qodaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "qodaTests-Info.plist"; sourceTree = "<group>"; };
 		3079C26F18A1C02700A228E2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3079C27118A1C02700A228E2 /* qodaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = qodaTests.m; sourceTree = "<group>"; };
-		3079C27B18A1C6C600A228E2 /* Tapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tapper.h; sourceTree = "<group>"; };
-		3079C27C18A1C6C700A228E2 /* Tapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tapper.m; sourceTree = "<group>"; };
 		3079C27F18A1CB1400A228E2 /* orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange.png; sourceTree = "<group>"; };
 		3079C28018A1CB1400A228E2 /* peach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = peach.png; sourceTree = "<group>"; };
 		3079C28118A1CB1400A228E2 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
@@ -159,8 +156,6 @@
 				3079C25A18A1C02600A228E2 /* MyScene.m */,
 				3079C29318A1D60800A228E2 /* SKButton.h */,
 				3079C29418A1D60800A228E2 /* SKButton.m */,
-				3079C27B18A1C6C600A228E2 /* Tapper.h */,
-				3079C27C18A1C6C700A228E2 /* Tapper.m */,
 				3079C25C18A1C02600A228E2 /* Spaceship.png */,
 				3079C25E18A1C02600A228E2 /* Images.xcassets */,
 				3079C24518A1C02600A228E2 /* Supporting Files */,
@@ -328,7 +323,6 @@
 				3079C25818A1C02600A228E2 /* ViewController.m in Sources */,
 				3079C24F18A1C02600A228E2 /* AppDelegate.m in Sources */,
 				3079C24B18A1C02600A228E2 /* main.m in Sources */,
-				3079C27D18A1C6C700A228E2 /* Tapper.m in Sources */,
 				3079C29518A1D60800A228E2 /* SKButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
