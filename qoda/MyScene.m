@@ -27,6 +27,9 @@
 
 #define ControlDeadZone 20
 
+static const uint32_t shootCategory     =  0x1 << 0;
+static const uint32_t mechCategory        =  0x1 << 1;
+
 @implementation MyScene{
     SKSpriteNode *analogp1Left;
     SKSpriteNode *analogp2Left;
@@ -165,7 +168,7 @@
         }
     }
     
-        [self controlAnalogs];
+    //    [self controlAnalogs];
     
     
 }
@@ -348,7 +351,7 @@
     [self controlMechShoot:mech1 withControl:analogp1Right andCenter:analogp1RightCenter];
     
     if (analogp1LeftCenterSelected||analogp2RightCenterSelected||analogp1LeftCenterSelected||analogp2RightCenterSelected) {
-        [self controlAnalogs];
+   //     [self controlAnalogs];
     }
     
     /* Called before each frame is rendered */
@@ -356,6 +359,9 @@
 
 -(void)didMoveToView:(SKView *)view{
     /* Called right after the view shows the scene */
+    
+    self.physicsWorld.gravity = CGVectorMake(0,0);
+    self.physicsWorld.contactDelegate = self;
     SKTexture *backGround = [SKTexture textureWithImageNamed:@"floor"];
     
     SKSpriteNode* backGroundNode = [SKSpriteNode spriteNodeWithTexture:backGround];
@@ -425,8 +431,56 @@
     mech1.name = @"mech1";
     [self addChild:mech1];
 
+    mech1.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:mech1.size]; // 1
+    mech1.physicsBody.dynamic = YES; // 2
+    mech1.physicsBody.categoryBitMask = mechCategory; // 3
+    mech1.physicsBody.contactTestBitMask = mechCategory; // 4
+    mech1.physicsBody.collisionBitMask = 0; // 5
+
     
+    SKTexture *mech2Texture = [SKTexture textureWithImageNamed:@"Mech2"];
     
+    mech2 = [SKSpriteNode spriteNodeWithTexture:mech2Texture];
+    mech2.position = [self getPointFromScaleX:50 y:p2ControlLeftY];
+    mech2.size = CGSizeMake(mechSizeWidth, mechSizeHeight);
+    mech2.name = @"mech2";
+    [self addChild:mech2];
+
+    mech2.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:mech2.size]; // 1
+    mech2.physicsBody.dynamic = YES; // 2
+    mech2.physicsBody.categoryBitMask = mechCategory; // 3
+    mech2.physicsBody.contactTestBitMask = mechCategory; // 4
+    mech2.physicsBody.collisionBitMask = 0; // 5
+    
+}
+
+- (void)mech:(SKNode *)mech1 didCollideWithMech:(SKNode *)mech2 {
+    
+    NSLog(@"Hit");
+}
+
+- (void)didBeginContact:(SKPhysicsContact *)contact
+{
+    // 1
+    SKPhysicsBody *firstBody, *secondBody;
+    
+    if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask)
+    {
+        firstBody = contact.bodyA;
+        secondBody = contact.bodyB;
+    }
+    else
+    {
+        firstBody = contact.bodyB;
+        secondBody = contact.bodyA;
+    }
+    
+    // 2
+    if ((firstBody.categoryBitMask & mechCategory) != 0 && (secondBody.categoryBitMask & mechCategory) != 0)
+    {
+        [self mech:firstBody.node didCollideWithMech:secondBody.node];
+
+    }
 }
 
 -(IBAction)actionBtn1P1{

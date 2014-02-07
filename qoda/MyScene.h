@@ -9,7 +9,7 @@
 #import <SpriteKit/SpriteKit.h>
 #import "SKButton.h"
 
-@interface MyScene : SKScene
+@interface MyScene : SKScene <SKPhysicsContactDelegate>
 
 @property (nonatomic, retain) SKButton *btn1P1;
 @property (nonatomic, retain) SKButton *btn2P1;
