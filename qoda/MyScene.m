@@ -199,9 +199,42 @@
     
 }
 
+-(void)controlMechShoot:(SKNode*)Mech withControl:(SKNode*)Control andCenter:(SKNode*)ControlCenter{
+    
+    CGPoint point = Mech.position;
+    bool movement = false;
+    if ((ControlCenter.position.y - Control.position.y)>ControlDeadZone) {
+        point.y = Mech.position.y+mechStep;
+        movement = true;
+    }else if ((ControlCenter.position.y - Control.position.y)<-ControlDeadZone) {
+        point.y = Mech.position.y-mechStep;
+        movement = true;
+        
+    }
+    
+    if ((ControlCenter.position.x - Control.position.x)>ControlDeadZone) {
+        point.x = Mech.position.x-mechStep;
+        movement = true;
+        
+    }else if ((ControlCenter.position.x - Control.position.x)<-ControlDeadZone) {
+        point.x = Mech.position.x+mechStep;
+        movement = true;
+        
+    }
+    
+    if (movement) {
+        double angle = atan2(point.x-Mech.position.x,point.y-Mech.position.y);
+        NSLog(@"ANGLE %f", angle);
+        
+        [Mech runAction:[SKAction rotateToAngle:angle duration:mechStepTime]];
+    }
+    
+
+}
+
 -(void)controlMech:(SKNode*)Mech withControl:(SKNode*)Control andCenter:(SKNode*)ControlCenter{
-    NSLog(@"distance y %f", ControlCenter.position.y - Control.position.y);
-    NSLog(@"distance x %f", ControlCenter.position.x - Control.position.x);
+    //NSLog(@"distance y %f", ControlCenter.position.y - Control.position.y);
+    //NSLog(@"distance x %f", ControlCenter.position.x - Control.position.x);
     CGPoint point = Mech.position;
     bool movement = false;
     if ((ControlCenter.position.y - Control.position.y)>ControlDeadZone) {
@@ -312,6 +345,8 @@
 
 -(void)update:(CFTimeInterval)currentTime {
     [self controlMech:mech1 withControl:analogp1Left andCenter:analogp1LeftCenter];
+    [self controlMechShoot:mech1 withControl:analogp1Right andCenter:analogp1RightCenter];
+    
     if (analogp1LeftCenterSelected||analogp2RightCenterSelected||analogp1LeftCenterSelected||analogp2RightCenterSelected) {
         [self controlAnalogs];
     }
