@@ -9,6 +9,11 @@
 #import "MyScene.h"
 
 #define analogSize 130
+#define mechSizeWidth 100
+#define mechSizeHeight 80
+#define mechStep 7
+#define mechStepTime .1
+
 
 #define p1ControlLeftX 10
 #define p1ControlLeftY 10
@@ -20,6 +25,7 @@
 #define p2ControlRightX 90
 #define p2ControlRightY 90
 
+#define ControlDeadZone 20
 
 @implementation MyScene{
     SKSpriteNode *analogp1Left;
@@ -30,6 +36,9 @@
     SKSpriteNode *analogp2LeftCenter;
     SKSpriteNode *analogp1RightCenter;
     SKSpriteNode *analogp2RightCenter;
+    
+    SKSpriteNode *mech1;
+    SKSpriteNode *mech2;
     
     BOOL analogp1LeftCenterSelected;
     BOOL analogp2LeftCenterSelected;
@@ -145,7 +154,7 @@
                     if (distance<node.size.width*0.7) {
                         nodeCenter.position = location;
                         analogp2RightCenterSelected = TRUE;
-
+                        
                     }
                 }
             }
@@ -187,6 +196,41 @@
   analogp2LeftCenterSelected = FALSE;
   analogp1RightCenterSelected = FALSE;
   analogp2RightCenterSelected = FALSE;
+    
+}
+
+-(void)controlMech:(SKNode*)Mech withControl:(SKNode*)Control andCenter:(SKNode*)ControlCenter{
+    NSLog(@"distance y %f", ControlCenter.position.y - Control.position.y);
+    NSLog(@"distance x %f", ControlCenter.position.x - Control.position.x);
+    CGPoint point = Mech.position;
+    bool movement = false;
+    if ((ControlCenter.position.y - Control.position.y)>ControlDeadZone) {
+        point.y = Mech.position.y+mechStep;
+        movement = true;
+    }else if ((ControlCenter.position.y - Control.position.y)<-ControlDeadZone) {
+        point.y = Mech.position.y-mechStep;
+        movement = true;
+
+    }
+    
+    if ((ControlCenter.position.x - Control.position.x)>ControlDeadZone) {
+        point.x = Mech.position.x+mechStep;
+        movement = true;
+
+    }else if ((ControlCenter.position.x - Control.position.x)<-ControlDeadZone) {
+        point.x = Mech.position.x-mechStep;
+        movement = true;
+
+    }
+    
+    if (movement) {
+        SKAction *move = [SKAction moveTo:point duration:mechStepTime];
+        [Mech runAction:move];
+    }
+    
+//    double angle = atan2(point.y-Mech.position.y,point.x-Mech.position.x);
+  //  [Mech runAction:[SKAction rotateToAngle:angle duration:mechStepTime]];
+
     
 }
 
@@ -267,9 +311,11 @@
 }
 
 -(void)update:(CFTimeInterval)currentTime {
+    [self controlMech:mech1 withControl:analogp1Left andCenter:analogp1LeftCenter];
     if (analogp1LeftCenterSelected||analogp2RightCenterSelected||analogp1LeftCenterSelected||analogp2RightCenterSelected) {
         [self controlAnalogs];
     }
+    
     /* Called before each frame is rendered */
 }
 
@@ -336,6 +382,14 @@
     analogp2RightCenter.name = @"analogp2Right";
     [self addChild:analogp2RightCenter];
     
+    SKTexture *mech1Texture = [SKTexture textureWithImageNamed:@"Mech1"];
+    
+    mech1 = [SKSpriteNode spriteNodeWithTexture:mech1Texture];
+    mech1.position = [self getPointFromScaleX:50 y:p1ControlLeftY];
+    mech1.size = CGSizeMake(mechSizeWidth, mechSizeHeight);
+    mech1.name = @"mech1";
+    [self addChild:mech1];
+
     
     
 }
