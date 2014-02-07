@@ -8,21 +8,36 @@
 
 #import "MyScene.h"
 
-#define btns 4
-#define btnSizeScale 10
+#define analogSize 130
+
+#define p1ControlLeftX 10
+#define p1ControlLeftY 10
+#define p1ControlRightX 90
+#define p1ControlRightY 10
+
+#define p2ControlLeftX 10
+#define p2ControlLeftY 90
+#define p2ControlRightX 90
+#define p2ControlRightY 90
+
+
 @implementation MyScene{
-    NSMutableArray *arrBtnsP1;
-    NSMutableArray *arrBtnsP2;
-    
+    SKSpriteNode *analogp1Left;
+    SKSpriteNode *analogp2Left;
+    SKSpriteNode *analogp1Right;
+    SKSpriteNode *analogp2Right;
+    SKSpriteNode *analogp1LeftCenter;
+    SKSpriteNode *analogp2LeftCenter;
+    SKSpriteNode *analogp1RightCenter;
+    SKSpriteNode *analogp2RightCenter;
+
 }
-@synthesize btn1P1, btn1P2, btn2P1, btn2P2, btn3P1, btn3P2, btn4P1, btn4P2;
 
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         /* Setup your scene here */
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
-        
         
         /*
         SKLabelNode *myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
@@ -38,13 +53,118 @@
     return self;
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    /* Called when a touch begins */
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+
+    for (UITouch *touch in touches) {
+        CGPoint location = [touch locationInNode:self];
+        NSArray *nodes = [self nodesAtPoint:location];
+       // NSLog(@"nodes %@", nodes);
+        if (nodes.count>0) {
+            NSUInteger index;
+            index = [nodes indexOfObject:analogp1Left];
+            
+            if (index!=NSNotFound) {
+                SKSpriteNode *node = [nodes objectAtIndex:index];
+                
+                index = [nodes indexOfObject:analogp1LeftCenter];
+                
+            
+                if (index!=NSNotFound) {
+                    SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
+
+                    float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
+                    if (distance<node.size.width*0.7) {
+                        nodeCenter.position = location;
+                    }
+                }
+            }
+            
+        }
+    }
     
+        
+    
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    for (UITouch *touch in touches) {
+        CGPoint location = [touch locationInNode:self];
+        NSArray *nodes = [self nodesAtPoint:location];
+        // NSLog(@"nodes %@", nodes);
+        if (nodes.count>0) {
+            if ([nodes indexOfObject:analogp1LeftCenter]!=NSNotFound) {
+                SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY] duration:0.1f];
+                [analogp1LeftCenter runAction:move];
+            }
+        }
+    }
+
+}
+
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
+    for (UITouch *touch in touches) {
+        CGPoint location = [touch locationInNode:self];
+        NSArray *nodes = [self nodesAtPoint:location];
+        // NSLog(@"nodes %@", nodes);
+        if (nodes.count>0) {
+            if ([nodes indexOfObject:analogp1LeftCenter]!=NSNotFound) {
+                SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY] duration:0.1f];
+                [analogp1LeftCenter runAction:move];
+            }
+        }
+    }
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    /* Called when a touch begins */
+    /*
     CGPoint location = [[touches anyObject] locationInNode:self];
     
     NSArray *nodes = [self nodesAtPoint:location];
     NSLog(@"nodes %@", nodes);
+    */
+    /*
+    for (UITouch *touch in touches) {
+        CGPoint location = [touch locationInNode:self];
+        
+        SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Spaceship"];
+        
+        sprite.position = location;
+        
+        SKAction *action = [SKAction rotateByAngle:M_PI duration:1];
+        
+        [sprite runAction:[SKAction repeatActionForever:action]];
+        
+        [self addChild:sprite];
+    }*/
+    
+    /*
+    CGPoint location = [[touches anyObject] locationInNode:self];
+    
+    NSArray *nodes = [self nodesAtPoint:location];
+    
+    if ([nodes count] == 0){
+        SKNode *ladybug = [self childNodeWithName:@"ladybug"];
+        SKAction *move = [SKAction moveTo:location duration:1.0f];
+        [ladybug runAction:move];
+        
+        double angle = atan2(location.y-ladybug.position.y,location.x-ladybug.position.x);
+        [ladybug runAction:[SKAction rotateToAngle:angle duration:.1]];
+    } else {
+        // tapped on a bug
+     //   [self runAction:[SKAction playSoundFileNamed:@"ladybug.wav" waitForCompletion:NO]];
+        NSLog(@"ACTION!")
+    }
+    */
+    
+    
+    /*
+    
+    
+    
+    
+    
 }
 
 -(void)update:(CFTimeInterval)currentTime {
@@ -53,77 +173,68 @@
 
 -(void)didMoveToView:(SKView *)view{
     /* Called right after the view shows the scene */
+    SKTexture *backGround = [SKTexture textureWithImageNamed:@"floor"];
     
-    arrBtnsP1 = [[NSMutableArray alloc]initWithCapacity:0];
-
-    for (int p = 1; p<=2; p++) {
-        int posy;
-        if (p==1) {
-            posy = 20;
-        }else{
-            posy = 80;
-        }
-        
-        for (int b=1; b<=btns; b++) {
-            SKButton *tempButton = [[SKButton alloc] initWithImageNamedNormal:@"buttonRed.png" selected:@"buttonPressed.png"];
-            [tempButton setSize:CGSizeMake(self.view.frame.size.width/btnSizeScale, self.view.frame.size.width/btnSizeScale)];
-            [tempButton setPosition:[self getPointFromScaleX:((100/btns/1.2)*b) y:posy]];
-            
-            switch (b) {
-                case 1:
-                    if (p==1) {
-                        [tempButton setTouchUpInsideTarget:self action:@selector(actionBtn1P1)];
-                        btn1P1 = tempButton;
-                    }else{
-                        [tempButton setTouchUpInsideTarget:self action:@selector(actionBtn1P2)];
-                        btn1P2 = tempButton;
-                    }
-                    
-                    break;
-                case 2:
-                    if (p==1) {
-                        [tempButton setTouchUpInsideTarget:self action:@selector(actionBtn2P1)];
-                        btn2P1 = tempButton;
-                    }else{
-                        [tempButton setTouchUpInsideTarget:self action:@selector(actionBtn2P2)];
-                        btn2P2 = tempButton;
-                    }
-                    
-                    break;
-                case 3:
-                    if (p==1) {
-                        [tempButton setTouchUpInsideTarget:self action:@selector(actionBtn3P1)];
-                        btn3P1 = tempButton;
-                    }else{
-                        [tempButton setTouchUpInsideTarget:self action:@selector(actionBtn3P2)];
-                        btn3P2 = tempButton;
-                    }
-                    
-                    break;
-                case 4:
-                    if (p==1) {
-                        [tempButton setTouchUpInsideTarget:self action:@selector(actionBtn4P1)];
-                        btn4P1 = tempButton;
-                    }else{
-                        [tempButton setTouchUpInsideTarget:self action:@selector(actionBtn4P2)];
-                        btn4P2 = tempButton;
-                    }
-                    
-                    break;
-            }
-
-            
-        }
-    }
+    SKSpriteNode* backGroundNode = [SKSpriteNode spriteNodeWithTexture:backGround];
+    backGroundNode.position = self.view.center;
+    backGroundNode.size = self.view.frame.size;
+    backGroundNode.name = @"backGroundNode";
+    [self addChild:backGroundNode];
     
-    [self addChild:btn1P1];
-    [self addChild:btn2P1];
-    [self addChild:btn3P1];
-    [self addChild:btn4P1];
-    [self addChild:btn1P2];
-    [self addChild:btn2P2];
-    [self addChild:btn3P2];
-    [self addChild:btn4P2];
+    
+    SKTexture *texture_center_circle = [SKTexture textureWithImageNamed:@"center_circle"];
+    SKTexture *texture_out_circle = [SKTexture textureWithImageNamed:@"out_circle"];
+    
+    analogp1Left = [SKSpriteNode spriteNodeWithTexture:texture_out_circle];
+    analogp1Left.position = [self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY];
+    analogp1Left.size = CGSizeMake(analogSize, analogSize);
+    analogp1Left.name = @"analogp1Left";
+    [self addChild:analogp1Left];
+
+    analogp1Right = [SKSpriteNode spriteNodeWithTexture:texture_out_circle];
+    analogp1Right.position = [self getPointFromScaleX:p1ControlRightX y:p1ControlRightY];
+    analogp1Right.size = CGSizeMake(analogSize, analogSize);
+    analogp1Right.name = @"analogp1Right";
+    [self addChild:analogp1Right];
+    
+    analogp2Left = [SKSpriteNode spriteNodeWithTexture:texture_out_circle];
+    analogp2Left.position = [self getPointFromScaleX:p2ControlLeftX y:p2ControlLeftY];
+    analogp2Left.size = CGSizeMake(analogSize, analogSize);
+    analogp2Left.name = @"analogp2Left";
+    [self addChild:analogp2Left];
+    
+    analogp2Right = [SKSpriteNode spriteNodeWithTexture:texture_out_circle];
+    analogp2Right.position = [self getPointFromScaleX:p2ControlRightX y:p2ControlRightY];
+    analogp2Right.size = CGSizeMake(analogSize, analogSize);
+    analogp2Right.name = @"analogp2Right";
+    [self addChild:analogp2Right];
+    
+    
+    analogp1LeftCenter = [SKSpriteNode spriteNodeWithTexture:texture_center_circle];
+    analogp1LeftCenter.position = [self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY];
+    analogp1LeftCenter.size = CGSizeMake(analogSize/2, analogSize/2);
+    analogp1LeftCenter.name = @"analogp1Left";
+    [self addChild:analogp1LeftCenter];
+    
+    analogp1RightCenter = [SKSpriteNode spriteNodeWithTexture:texture_center_circle];
+    analogp1RightCenter.position = [self getPointFromScaleX:p1ControlRightX y:p1ControlRightY];
+    analogp1RightCenter.size = CGSizeMake(analogSize/2, analogSize/2);
+    analogp1RightCenter.name = @"analogp1Right";
+    [self addChild:analogp1RightCenter];
+    
+    analogp2LeftCenter = [SKSpriteNode spriteNodeWithTexture:texture_center_circle];
+    analogp2LeftCenter.position = [self getPointFromScaleX:p2ControlLeftX y:p2ControlLeftY];
+    analogp2LeftCenter.size = CGSizeMake(analogSize/2, analogSize/2);
+    analogp2LeftCenter.name = @"analogp2Left";
+    [self addChild:analogp2LeftCenter];
+    
+    analogp2RightCenter = [SKSpriteNode spriteNodeWithTexture:texture_center_circle];
+    analogp2RightCenter.position = [self getPointFromScaleX:p2ControlRightX y:p2ControlRightY];
+    analogp2RightCenter.size = CGSizeMake(analogSize/2, analogSize/2);
+    analogp2RightCenter.name = @"analogp2Right";
+    [self addChild:analogp2RightCenter];
+    
+    
     
 }
 
@@ -161,10 +272,11 @@
 
 
 -(CGPoint)getPointFromScaleX:(float)x y:(float)y{
-    NSLog(@"return view %f %f ", (self.view.frame.size.height/100)*x, (self.view.frame.size.width/100)*y);
-    
-    return CGPointMake((self.view.frame.size.height/100)*x, (self.view.frame.size.width/100)*y);
+    return CGPointMake((self.view.frame.size.width/100)*x, (self.view.frame.size.height/100)*y);
 }
 
+- (float)getDistanceBetween:(CGPoint)p1 and:(CGPoint)p2 {
+    return sqrt(pow(p2.x-p1.x,2)+pow(p2.y-p1.y,2));
+}
 
 @end
