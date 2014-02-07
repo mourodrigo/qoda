@@ -30,6 +30,12 @@
     SKSpriteNode *analogp2LeftCenter;
     SKSpriteNode *analogp1RightCenter;
     SKSpriteNode *analogp2RightCenter;
+    
+    BOOL analogp1LeftCenterSelected;
+    BOOL analogp2LeftCenterSelected;
+    BOOL analogp1RightCenterSelected;
+    BOOL analogp2RightCenterSelected;
+    
 
 }
 
@@ -61,8 +67,11 @@
        // NSLog(@"nodes %@", nodes);
         if (nodes.count>0) {
             NSUInteger index;
-            index = [nodes indexOfObject:analogp1Left];
             
+            //===CONTROLE DOS BOTÕES
+
+            //p1Left
+            index = [nodes indexOfObject:analogp1Left];
             if (index!=NSNotFound) {
                 SKSpriteNode *node = [nodes objectAtIndex:index];
                 
@@ -75,14 +84,109 @@
                     float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
                     if (distance<node.size.width*0.7) {
                         nodeCenter.position = location;
+                        analogp1LeftCenterSelected = TRUE;
+                        
                     }
                 }
             }
             
+            //p2Left
+            index = [nodes indexOfObject:analogp2Left];
+            if (index!=NSNotFound) {
+                SKSpriteNode *node = [nodes objectAtIndex:index];
+                
+                index = [nodes indexOfObject:analogp2LeftCenter];
+                
+                
+                if (index!=NSNotFound) {
+                    SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
+                    
+                    float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
+                    if (distance<node.size.width*0.7) {
+                        nodeCenter.position = location;
+                        analogp2LeftCenterSelected = TRUE;
+
+                    }
+                }
+            }
+            
+            //p1Right
+            index = [nodes indexOfObject:analogp1Right];
+            if (index!=NSNotFound) {
+                SKSpriteNode *node = [nodes objectAtIndex:index];
+                
+                index = [nodes indexOfObject:analogp1RightCenter];
+                
+                
+                if (index!=NSNotFound) {
+                    SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
+                    
+                    float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
+                    if (distance<node.size.width*0.7) {
+                        nodeCenter.position = location;
+                        analogp1RightCenterSelected = TRUE;
+
+                    }
+                }
+            }
+            
+            //p2Right
+            index = [nodes indexOfObject:analogp2Right];
+            if (index!=NSNotFound) {
+                SKSpriteNode *node = [nodes objectAtIndex:index];
+                
+                index = [nodes indexOfObject:analogp2RightCenter];
+                
+                
+                if (index!=NSNotFound) {
+                    SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
+                    
+                    float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
+                    if (distance<node.size.width*0.7) {
+                        nodeCenter.position = location;
+                        analogp2RightCenterSelected = TRUE;
+
+                    }
+                }
+            }
+            
+            
+            
+            
         }
     }
     
-        
+        [self controlAnalogs];
+    
+    
+}
+
+-(void)controlAnalogs{
+    if (!analogp1LeftCenterSelected) {
+        SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY] duration:0.1f];
+        [analogp1LeftCenter runAction:move];
+    }
+    
+    if (!analogp1RightCenterSelected) {
+        SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p1ControlRightX y:p1ControlRightY] duration:0.1f];
+        [analogp1RightCenter runAction:move];
+    }
+    
+    if (!analogp2LeftCenterSelected) {
+        SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p2ControlLeftX y:p2ControlLeftY] duration:0.1f];
+        [analogp2LeftCenter runAction:move];
+    }
+    
+    if (!analogp2RightCenterSelected) {
+        SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p2ControlRightX y:p2ControlRightY] duration:0.1f];
+        [analogp2RightCenter runAction:move];
+    }
+    
+    
+  analogp1LeftCenterSelected = FALSE;
+  analogp2LeftCenterSelected = FALSE;
+  analogp1RightCenterSelected = FALSE;
+  analogp2RightCenterSelected = FALSE;
     
 }
 
@@ -91,12 +195,7 @@
         CGPoint location = [touch locationInNode:self];
         NSArray *nodes = [self nodesAtPoint:location];
         // NSLog(@"nodes %@", nodes);
-        if (nodes.count>0) {
-            if ([nodes indexOfObject:analogp1LeftCenter]!=NSNotFound) {
-                SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY] duration:0.1f];
-                [analogp1LeftCenter runAction:move];
-            }
-        }
+      //  [self controlAnalogs];
     }
 
 }
@@ -164,10 +263,13 @@
     
     
     
-    
+*/
 }
 
 -(void)update:(CFTimeInterval)currentTime {
+    if (analogp1LeftCenterSelected||analogp2RightCenterSelected||analogp1LeftCenterSelected||analogp2RightCenterSelected) {
+        [self controlAnalogs];
+    }
     /* Called before each frame is rendered */
 }
 
