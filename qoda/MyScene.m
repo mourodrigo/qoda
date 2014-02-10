@@ -39,7 +39,7 @@
 
 static const uint32_t borderCategory     =  0x1 << 0;
 static const uint32_t mechCategory        =  0x1 << 1;
-//static const uint32_t borderCategory        =  0x1 << 2;
+static const uint32_t shootCategory        =  0x1 << 2;
 
 
 @implementation MyScene{
@@ -64,6 +64,19 @@ static const uint32_t mechCategory        =  0x1 << 1;
     SKSpriteNode *wallRight;
     SKSpriteNode *wallUp;
     SKSpriteNode *wallDown;
+    
+    SKLabelNode *lblHPP1;
+    SKLabelNode *lblHPP2;
+
+    SKLabelNode *lblShieldP1;
+    SKLabelNode *lblShieldP2;
+    
+    int hpp1;
+    int hpp2;
+
+    int shieldP1;
+    int shieldP2;
+    
 
 }
 
@@ -73,31 +86,22 @@ static const uint32_t mechCategory        =  0x1 << 1;
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
         
-        /*
-        SKLabelNode *myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
         
-        myLabel.text = @"Hello, World!";
-        myLabel.fontSize = 30;
-        myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
-                                       CGRectGetMidY(self.frame));
-        
-        [self addChild:myLabel];
- */
  }
     return self;
 }
 
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-
+-(void)magicControllers:(NSSet*)touches withEvent:(UIEvent *)event{
+    
     for (UITouch *touch in touches) {
         CGPoint location = [touch locationInNode:self];
         NSArray *nodes = [self nodesAtPoint:location];
-       // NSLog(@"nodes %@", nodes);
+        // NSLog(@"nodes %@", nodes);
         if (nodes.count>0) {
             NSUInteger index;
             
             //===CONTROLE DOS BOTÕES
-
+            
             //p1Left
             index = [nodes indexOfObject:analogp1Left];
             if (index!=NSNotFound) {
@@ -105,10 +109,10 @@ static const uint32_t mechCategory        =  0x1 << 1;
                 
                 index = [nodes indexOfObject:analogp1LeftCenter];
                 
-            
+                
                 if (index!=NSNotFound) {
                     SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
-
+                    
                     float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
                     if (distance<node.size.width*0.7) {
                         nodeCenter.position = location;
@@ -133,7 +137,7 @@ static const uint32_t mechCategory        =  0x1 << 1;
                     if (distance<node.size.width*0.7) {
                         nodeCenter.position = location;
                         analogp2LeftCenterSelected = TRUE;
-
+                        
                     }
                 }
             }
@@ -153,7 +157,48 @@ static const uint32_t mechCategory        =  0x1 << 1;
                     if (distance<node.size.width*0.7) {
                         nodeCenter.position = location;
                         analogp1RightCenterSelected = TRUE;
-
+                        
+                        /*
+                         UITouch * touch = [touches anyObject];
+                         CGPoint location = [touch locationInNode:self];
+                         */
+                        // 2 - Set up initial location of projectile
+                        SKSpriteNode * projectile = [SKSpriteNode spriteNodeWithImageNamed:@"bullet"];
+                        projectile.position = mech1.position;
+                        projectile.position = CGPointMake(mech1.position.x, mech1.position.y+100);
+                        // 3- Determine offset of location to projectile
+                        CGPoint offset = rwSub(nodeCenter.position, node.position);
+                        
+                        // 4 - Bail out if you are shooting down or backwards
+                        if (offset.x <= 0) return;
+                        
+                        // 5 - OK to add now - we've double checked position
+                        [self addChild:projectile];
+                        NSLog(@"projectile");
+                        // 6 - Get the direction of where to shoot
+                        CGPoint direction = rwNormalize(offset);
+                        
+                        // 7 - Make it shoot far enough to be guaranteed off screen
+                        CGPoint shootAmount = rwMult(direction, 1000);
+                        
+                        // 8 - Add the shoot amount to the current position
+                        CGPoint realDest = rwAdd(shootAmount, projectile.position);
+                        
+                        // 9 - Create the actions
+                        float velocity = 480.0/1.0;
+                        float realMoveDuration = self.size.width / velocity;
+                        SKAction * actionMove = [SKAction moveTo:realDest duration:realMoveDuration];
+                        SKAction * actionMoveDone = [SKAction removeFromParent];
+                        [projectile runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
+                        
+                        projectile.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:projectile.size]; // 1
+                        projectile.physicsBody.dynamic = YES; // 2
+                        projectile.physicsBody.categoryBitMask = shootCategory; // 3
+                        projectile.physicsBody.contactTestBitMask = mechCategory; // 4
+                        projectile.physicsBody.collisionBitMask = 0; // 5
+                        
+                        
+                        
                     }
                 }
             }
@@ -186,6 +231,11 @@ static const uint32_t mechCategory        =  0x1 << 1;
     
     //    [self controlAnalogs];
     
+    
+}
+
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self magicControllers:touches withEvent:event];
     
 }
 
@@ -325,65 +375,37 @@ static const uint32_t mechCategory        =  0x1 << 1;
     
     if ([nodes count] != 0){
         // 1 - Choose one of the touches to work with
-        UITouch * touch = [touches anyObject];
-        CGPoint location = [touch locationInNode:self];
-        
-        // 2 - Set up initial location of projectile
-        SKSpriteNode * projectile = [SKSpriteNode spriteNodeWithImageNamed:@"center_circle"];
-        projectile.position = mech1.position;
-        
-        // 3- Determine offset of location to projectile
-        CGPoint offset = rwSub(location, projectile.position);
-        
-        // 4 - Bail out if you are shooting down or backwards
-        if (offset.x <= 0) return;
-        
-        // 5 - OK to add now - we've double checked position
-        [self addChild:projectile];
-        NSLog(@"projectile");
-        // 6 - Get the direction of where to shoot
-        CGPoint direction = rwNormalize(offset);
-        
-        // 7 - Make it shoot far enough to be guaranteed off screen
-        CGPoint shootAmount = rwMult(direction, 1000);
-        
-        // 8 - Add the shoot amount to the current position
-        CGPoint realDest = rwAdd(shootAmount, projectile.position);
-        
-        // 9 - Create the actions
-        float velocity = 480.0/1.0;
-        float realMoveDuration = self.size.width / velocity;
-        SKAction * actionMove = [SKAction moveTo:realDest duration:realMoveDuration];
-        SKAction * actionMoveDone = [SKAction removeFromParent];
-        [projectile runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
         
         
     }
     
+    [self magicControllers:touches withEvent:event];
+
     
-    /*
+}
+
+-(void)updateLbls{
+    lblHPP1.text = [NSString stringWithFormat:@"HP: %d", hpp1];
     
+    lblHPP2.text = [NSString stringWithFormat:@"HP: %d", hpp2];
     
+    lblShieldP1.text = [NSString stringWithFormat:@"SHIELD: %d", shieldP1];
     
-    
-*/
-    
-    
-    
+    lblShieldP2.text = [NSString stringWithFormat:@"SHIELD: %d", shieldP2];
     
 }
 
 -(void)update:(CFTimeInterval)currentTime {
     [self controlMech:mech1 withControl:analogp1Left andCenter:analogp1LeftCenter];
     [mech1 runAction:[mech1  actionForKey:[NSString stringWithFormat:@"moveMech%@", mech1.name]]];
-    NSLog(@"RunAction");
     [self controlMechShoot:mech1 withControl:analogp1Right andCenter:analogp1RightCenter];
 
-    
     if (analogp1LeftCenterSelected||analogp2RightCenterSelected||analogp1LeftCenterSelected||analogp2RightCenterSelected) {
    //     [self controlAnalogs];
     }
-    
+
+    [self updateLbls];
+
     /* Called before each frame is rendered */
 }
 
@@ -551,6 +573,41 @@ static const uint32_t mechCategory        =  0x1 << 1;
     wallDown.physicsBody.contactTestBitMask = mechCategory; // 4
     wallDown.physicsBody.collisionBitMask = 0; // 5
     
+    lblHPP1 = [SKLabelNode labelNodeWithFontNamed:@"Courier"];
+    
+    lblHPP1.text = @"HP: 100";
+    lblHPP1.fontSize = 30;
+    lblHPP1.position = [self getPointFromScaleX:30 y:3];
+    
+    [self addChild:lblHPP1];
+ 
+    lblHPP2 = [SKLabelNode labelNodeWithFontNamed:@"Courier"];
+
+    lblHPP2.text = @"HP: 100";
+    lblHPP2.fontSize = 30;
+    lblHPP2.position = [self getPointFromScaleX:30 y:97];
+    [lblHPP2 runAction:[SKAction  rotateToAngle:3.15 duration:mechStepTime]];
+    [self addChild:lblHPP2];
+
+    
+    lblShieldP1 = [SKLabelNode labelNodeWithFontNamed:@"Courier"];
+    
+    lblShieldP1.text = @"SHIELD: 100";
+    lblShieldP1.fontSize = 30;
+    lblShieldP1.position = [self getPointFromScaleX:70 y:3];
+    
+    [self addChild:lblShieldP1];
+    
+    lblShieldP2 = [SKLabelNode labelNodeWithFontNamed:@"Courier"];
+    
+    lblShieldP2.text = @"SHIELD: 100";
+    lblShieldP2.fontSize = 30;
+    lblShieldP2.position = [self getPointFromScaleX:70 y:97];
+    [lblShieldP2 runAction:[SKAction  rotateToAngle:3.15 duration:mechStepTime]];
+    [self addChild:lblShieldP2];
+    
+    hpp1 = hpp2 = 100;
+    shieldP1 = shieldP2 = hpp1;
 }
 
 - (void)mech:(SKNode *)mech1 didCollideWithMech:(SKNode *)mech2 {
@@ -565,9 +622,27 @@ static const uint32_t mechCategory        =  0x1 << 1;
     [mech1 removeAllActions];
 }
 
+- (void)shoot:(SKNode *)shot didCollideWithMech:(SKNode *)mech {
+    
+    NSLog(@"Shot Hit Mech");
+    [shot removeFromParent];
+    if (mech==mech1) {
+        if (shieldP1>0) {
+            shieldP1--;
+        }else{
+            hpp1--;
+        }
+    }else{
+        if (shieldP2>0) {
+            shieldP2--;
+        }else{
+            hpp2--;
+        }
+    }
+}
+
 - (void)didBeginContact:(SKPhysicsContact *)contact
 {
-    NSLog(@"didBeginContact");
     // 1
     SKPhysicsBody *firstBody, *secondBody;
     
@@ -598,6 +673,15 @@ static const uint32_t mechCategory        =  0x1 << 1;
     {
         [self mech:secondBody.node didCollideWithBorder:firstBody.node];
     }
+    
+    if ((firstBody.categoryBitMask & mechCategory) != 0 && (secondBody.categoryBitMask & shootCategory) != 0)
+    {
+        NSLog(@"METHOD 2");
+
+        [self shoot:secondBody.node didCollideWithMech:firstBody.node];
+    }
+
+    
 }
 
 #pragma Mark - Math stuff
