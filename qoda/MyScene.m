@@ -266,6 +266,38 @@ static const uint32_t shootCategory        =  0x1 << 2;
 
 }
 
+-(void)controlShootWithMech:(SKNode*)Mech withControl:(SKButton*)control{
+    CGPoint point = Mech.position;
+    bool movement = false;
+    
+    NSLog(@"x %f y %f", control.posX, control.posY);
+    
+    if (control.posX>ControlDeadZone || control.posX<ControlDeadZone) {
+        point.x = Mech.position.x-(control.posX*mechStep);
+        movement = true;
+        
+    }
+    
+    if (control.posY>ControlDeadZone || control.posY<ControlDeadZone) {
+        point.y = Mech.position.y+(control.posY*mechStep);
+        movement = true;
+        
+    }
+    
+    
+    if (movement) {
+        //    NSLog(@"control %f %f", control.posX, control.posY);
+        //    NSLog(@"move %@ to x:%f y:%f ", Mech.name, point.x, point.y);
+        double angle = atan2(point.x-Mech.position.x,point.y-Mech.position.y);
+        //  NSLog(@"ANGLE %f", angle);
+        
+        [Mech runAction:[SKAction rotateToAngle:angle duration:mechStepTime]];
+
+//        [Mech runAction:[SKAction moveTo:point duration:mechStepTime]];
+    }
+    
+}
+
 -(void)controlMech:(SKNode*)Mech withControl:(SKButton*)control{
     CGPoint point = Mech.position;
     bool movement = false;
@@ -348,7 +380,11 @@ static const uint32_t shootCategory        =  0x1 << 2;
 
 -(void)update:(CFTimeInterval)currentTime {
     [self controlMech:mech1 withControl:analogp1Left];
-   // [mech1 runAction:[mech1  actionForKey:[NSString stringWithFormat:@"moveMech%@", mech1.name]]];
+    [self controlMech:mech2 withControl:analogp2Right];
+    [self controlShootWithMech:mech1 withControl:analogp1Right];
+    [self controlShootWithMech:mech2 withControl:analogp2Left];
+
+    // [mech1 runAction:[mech1  actionForKey:[NSString stringWithFormat:@"moveMech%@", mech1.name]]];
    // [self controlMechShoot:mech1 withControl:analogp1Right andCenter:analogp1RightCenter];
 
 

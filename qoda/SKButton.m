@@ -164,7 +164,7 @@
                
                 if ([node.name isEqualToString:[self.name stringByAppendingString:@"-analogCenter"]]) {
                     CGPoint touchPoint = [touch locationInNode:self.parent];
-                    NSLog(@"touchpoint %f %f", touchPoint.x, touchPoint.y);
+                    //NSLog(@"touchpoint %f %f", touchPoint.x, touchPoint.y);
                     if (CGRectContainsPoint(self.frame, touchPoint)) {
                         [self setIsSelected:YES];
                     } else {
