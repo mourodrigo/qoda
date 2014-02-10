@@ -8,6 +8,9 @@
 @property (nonatomic, readonly, weak) id targetTouchDown;
 @property (nonatomic, readonly, weak) id targetTouchUp;
 
+@property (nonatomic) float posX;
+@property (nonatomic) float posY;
+
 @property (nonatomic) BOOL isEnabled;
 @property (nonatomic) BOOL isSelected;
 @property (nonatomic, readonly, strong) SKLabelNode *title;

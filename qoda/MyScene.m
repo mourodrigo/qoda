@@ -11,7 +11,7 @@
 #define analogSize 130
 #define mechSizeWidth 100
 #define mechSizeHeight 80
-#define mechStep 7
+#define mechStep 0.5
 #define mechStepTime .1
 
 
@@ -43,14 +43,10 @@ static const uint32_t shootCategory        =  0x1 << 2;
 
 
 @implementation MyScene{
-    SKSpriteNode *analogp1Left;
-    SKSpriteNode *analogp2Left;
-    SKSpriteNode *analogp1Right;
-    SKSpriteNode *analogp2Right;
-    SKSpriteNode *analogp1LeftCenter;
-    SKSpriteNode *analogp2LeftCenter;
-    SKSpriteNode *analogp1RightCenter;
-    SKSpriteNode *analogp2RightCenter;
+    SKButton *analogp1Left;
+    SKButton *analogp2Left;
+    SKButton *analogp1Right;
+    SKButton *analogp2Right;
     
     SKSpriteNode *mech1;
     SKSpriteNode *mech2;
@@ -99,7 +95,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
         // NSLog(@"nodes %@", nodes);
         if (nodes.count>0) {
             NSUInteger index;
-            
+            /*
             //===CONTROLE DOS BOTÕES
             
             //p1Left
@@ -158,10 +154,6 @@ static const uint32_t shootCategory        =  0x1 << 2;
                         nodeCenter.position = location;
                         analogp1RightCenterSelected = TRUE;
                         
-                        /*
-                         UITouch * touch = [touches anyObject];
-                         CGPoint location = [touch locationInNode:self];
-                         */
                         // 2 - Set up initial location of projectile
                         SKSpriteNode * projectile = [SKSpriteNode spriteNodeWithImageNamed:@"bullet"];
                         projectile.position = mech1.position;
@@ -224,7 +216,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
             }
             
             
-            
+    */
             
         }
     }
@@ -239,34 +231,6 @@ static const uint32_t shootCategory        =  0x1 << 2;
     
 }
 
--(void)controlAnalogs{
-    if (!analogp1LeftCenterSelected) {
-        SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY] duration:0.1f];
-        [analogp1LeftCenter runAction:move];
-    }
-    
-    if (!analogp1RightCenterSelected) {
-        SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p1ControlRightX y:p1ControlRightY] duration:0.1f];
-        [analogp1RightCenter runAction:move];
-    }
-    
-    if (!analogp2LeftCenterSelected) {
-        SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p2ControlLeftX y:p2ControlLeftY] duration:0.1f];
-        [analogp2LeftCenter runAction:move];
-    }
-    
-    if (!analogp2RightCenterSelected) {
-        SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p2ControlRightX y:p2ControlRightY] duration:0.1f];
-        [analogp2RightCenter runAction:move];
-    }
-    
-    
-  analogp1LeftCenterSelected = FALSE;
-  analogp2LeftCenterSelected = FALSE;
-  analogp1RightCenterSelected = FALSE;
-  analogp2RightCenterSelected = FALSE;
-    
-}
 
 -(void)controlMechShoot:(SKNode*)Mech withControl:(SKNode*)Control andCenter:(SKNode*)ControlCenter{
     
@@ -298,44 +262,41 @@ static const uint32_t shootCategory        =  0x1 << 2;
         [Mech runAction:[SKAction rotateToAngle:angle duration:mechStepTime]];
     }
     
+    
 
 }
 
--(void)controlMech:(SKNode*)Mech withControl:(SKNode*)Control andCenter:(SKNode*)ControlCenter{
-    
-    //NSLog(@"distance y %f", ControlCenter.position.y - Control.position.y);
-    //NSLog(@"distance x %f", ControlCenter.position.x - Control.position.x);
+-(void)controlMech:(SKNode*)Mech withControl:(SKButton*)control{
     CGPoint point = Mech.position;
     bool movement = false;
-    [Mech removeActionForKey:[NSString stringWithFormat:@"moveMech%@", Mech.name]];
-
-    if ((ControlCenter.position.y - Control.position.y)>ControlDeadZone) {
-        point.y = Mech.position.y+mechStep;
-        movement = true;
-    }else if ((ControlCenter.position.y - Control.position.y)<-ControlDeadZone) {
-        point.y = Mech.position.y-mechStep;
-        movement = true;
+    
+    if (control.posX>ControlDeadZone || control.posX<ControlDeadZone) {
+        float x = point.x;
+        point.x = Mech.position.x+(control.posX*mechStep);
+        if (point.x<=wallLeft.position.x+wallLeft.size.width/2 || point.x>=wallRight.position.x-wallRight.size.width/2) {
+            point.x = x;
+        }else{
+            movement = true;
+        }
+    }
+    
+    if (control.posY>ControlDeadZone || control.posY<ControlDeadZone) {
+        float y = point.y;
+        point.y = Mech.position.y+(control.posY*mechStep);
+        if (point.y<=wallUp.position.y+wallUp.size.height/2 || point.y>=wallDown.position.y-wallDown.size.height/2) {
+            point.y = y;
+        }else{
+            movement = true;
+        }
 
     }
     
-    if ((ControlCenter.position.x - Control.position.x)>ControlDeadZone) {
-        point.x = Mech.position.x+mechStep;
-        movement = true;
-
-    }else if ((ControlCenter.position.x - Control.position.x)<-ControlDeadZone) {
-        point.x = Mech.position.x-mechStep;
-        movement = true;
-
-    }
     
     if (movement) {
-        SKAction *move = [SKAction moveTo:point duration:mechStepTime];
-        [Mech runAction:move withKey:[NSString stringWithFormat:@"moveMech%@", Mech.name]];
+    //    NSLog(@"control %f %f", control.posX, control.posY);
+    //    NSLog(@"move %@ to x:%f y:%f ", Mech.name, point.x, point.y);
+        [Mech runAction:[SKAction moveTo:point duration:mechStepTime]];
     }
-    
-//    double angle = atan2(point.y-Mech.position.y,point.x-Mech.position.x);
-  //  [Mech runAction:[SKAction rotateToAngle:angle duration:mechStepTime]];
-
     
 }
 
@@ -350,17 +311,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
 }
 
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-    for (UITouch *touch in touches) {
-        CGPoint location = [touch locationInNode:self];
-        NSArray *nodes = [self nodesAtPoint:location];
-        // NSLog(@"nodes %@", nodes);
-        if (nodes.count>0) {
-            if ([nodes indexOfObject:analogp1LeftCenter]!=NSNotFound) {
-                SKAction *move = [SKAction moveTo:[self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY] duration:0.1f];
-                [analogp1LeftCenter runAction:move];
-            }
-        }
-    }
+    
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -396,14 +347,12 @@ static const uint32_t shootCategory        =  0x1 << 2;
 }
 
 -(void)update:(CFTimeInterval)currentTime {
-    [self controlMech:mech1 withControl:analogp1Left andCenter:analogp1LeftCenter];
-    [mech1 runAction:[mech1  actionForKey:[NSString stringWithFormat:@"moveMech%@", mech1.name]]];
-    [self controlMechShoot:mech1 withControl:analogp1Right andCenter:analogp1RightCenter];
+    [self controlMech:mech1 withControl:analogp1Left];
+   // [mech1 runAction:[mech1  actionForKey:[NSString stringWithFormat:@"moveMech%@", mech1.name]]];
+   // [self controlMechShoot:mech1 withControl:analogp1Right andCenter:analogp1RightCenter];
 
-    if (analogp1LeftCenterSelected||analogp2RightCenterSelected||analogp1LeftCenterSelected||analogp2RightCenterSelected) {
-   //     [self controlAnalogs];
-    }
 
+    
     [self updateLbls];
 
     /* Called before each frame is rendered */
@@ -433,9 +382,36 @@ static const uint32_t shootCategory        =  0x1 << 2;
     bordersNode.name = @"borders";
     [self addChild:bordersNode];
     
-    SKTexture *texture_center_circle = [SKTexture textureWithImageNamed:@"center_circle"];
-    SKTexture *texture_out_circle = [SKTexture textureWithImageNamed:@"out_circle"];
     
+    analogp1Left = [[SKButton alloc] initWithImageNamedNormal:@"out_circle" selected:@"out_circle"];
+    [analogp1Left setPosition:[self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY]];
+    analogp1Left.size = CGSizeMake(analogSize, analogSize);
+    analogp1Left.name = @"analogp1Left";
+    [self addChild:analogp1Left];
+
+    analogp1Right = [[SKButton alloc] initWithImageNamedNormal:@"out_circle" selected:@"out_circle"];
+    [analogp1Right setPosition:[self getPointFromScaleX:p1ControlRightX y:p1ControlRightY]];
+    analogp1Right.size = CGSizeMake(analogSize, analogSize);
+    analogp1Right.name = @"analogp1Right";
+
+    [self addChild:analogp1Right];
+    
+    analogp2Left = [[SKButton alloc] initWithImageNamedNormal:@"out_circle" selected:@"out_circle"];
+    [analogp2Left setPosition:[self getPointFromScaleX:p2ControlLeftX y:p2ControlLeftY]];
+    analogp2Left.size = CGSizeMake(analogSize, analogSize);
+    analogp2Left.name = @"analogp2Left";
+
+    [self addChild:analogp2Left];
+    
+    analogp2Right = [[SKButton alloc] initWithImageNamedNormal:@"out_circle" selected:@"out_circle"];
+    [analogp2Right setPosition:[self getPointFromScaleX:p2ControlRightX y:p2ControlRightY]];
+    analogp2Right.size = CGSizeMake(analogSize, analogSize);
+    analogp2Right.name = @"analogp2Right";
+
+    [self addChild:analogp2Right];
+    
+    
+    /*
     analogp1Left = [SKSpriteNode spriteNodeWithTexture:texture_out_circle];
     analogp1Left.position = [self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY];
     analogp1Left.size = CGSizeMake(analogSize, analogSize);
@@ -499,7 +475,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
     analogp2RightCenter.alpha = ControlCenterAlpha;
 
     [self addChild:analogp2RightCenter];
-    
+    */
     SKTexture *mech1Texture = [SKTexture textureWithImageNamed:@"Mech1"];
     
     mech1 = [SKSpriteNode spriteNodeWithTexture:mech1Texture];
@@ -608,6 +584,8 @@ static const uint32_t shootCategory        =  0x1 << 2;
     
     hpp1 = hpp2 = 100;
     shieldP1 = shieldP2 = hpp1;
+    
+  
 }
 
 - (void)mech:(SKNode *)mech1 didCollideWithMech:(SKNode *)mech2 {

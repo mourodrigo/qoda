@@ -1,9 +1,12 @@
 #import "SKButton.h"
 #import <objc/message.h>
 
+#define max 10
 
-@implementation SKButton
-
+@implementation SKButton{
+    SKSpriteNode *analogp1LeftCenter;
+}
+@synthesize posX, posY;
 #pragma mark Texture Initializer
 
 /**
@@ -122,6 +125,22 @@
         objc_msgSend(_targetTouchDown, _actionTouchDown);
         [self setIsSelected:YES];
     }
+    SKTexture *texture_center_circle = [SKTexture textureWithImageNamed:@"center_circle"];
+    
+    
+    
+    analogp1LeftCenter = [SKSpriteNode spriteNodeWithTexture:texture_center_circle];
+    
+    analogp1LeftCenter.size = CGSizeMake(self.frame.size.width/2, self.frame.size.height/2);
+    analogp1LeftCenter.name = [NSString stringWithFormat:@"%@-analogCenter", self.name];
+
+    [self addChild:analogp1LeftCenter];
+//    analogp1LeftCenter.position = [self getPointFromTouches:touches];
+    posX = analogp1LeftCenter.position.x;
+    posY = analogp1LeftCenter.position.y;
+
+    
+    
 }
 
 /**
@@ -129,16 +148,55 @@
  * If the touch moves outside of the button, the isSelected property is restored
  * to NO and the texture changes to "normalTexture".
  */
+
+-(CGPoint)getPointFromTouch:(CGPoint)touchPoint{
+    
+    return CGPointMake(posX+touchPoint.x-self.position.x, posX+touchPoint.y-self.position.y);
+    
+}
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     if ([self isEnabled]) {
-        UITouch *touch = [touches anyObject];
-        CGPoint touchPoint = [touch locationInNode:self.parent];
-        
-        if (CGRectContainsPoint(self.frame, touchPoint)) {
-            [self setIsSelected:YES];
-        } else {
-            [self setIsSelected:NO];
+
+        for (UITouch *touch in touches) {
+            CGPoint location = [touch locationInNode:self];
+            NSArray *nodes = [self nodesAtPoint:location];
+            for (SKNode *node in nodes) {
+               
+                if ([node.name isEqualToString:[self.name stringByAppendingString:@"-analogCenter"]]) {
+                    CGPoint touchPoint = [touch locationInNode:self.parent];
+                    NSLog(@"touchpoint %f %f", touchPoint.x, touchPoint.y);
+                    if (CGRectContainsPoint(self.frame, touchPoint)) {
+                        [self setIsSelected:YES];
+                    } else {
+                        [self setIsSelected:NO];
+                    }
+                    
+                    posX = posY = 0;
+                    
+                    
+                    analogp1LeftCenter.position = [self getPointFromTouch:touchPoint];
+                    
+                    if (posX>max) {
+                        posX = max;
+                    }else if (posX<-max){
+                        posX = -max;
+                    }else{
+                        posX = analogp1LeftCenter.position.x;
+                    }
+                    
+                    if (posY>max) {
+                        posY = max;
+                    }else if (posY<-max){
+                        posY = -max;
+                    }else{
+                        posY = analogp1LeftCenter.position.y;
+                    }
+                }
+            }
+            //  [self controlAnalogs];
         }
+        
+
     }
 }
 
@@ -155,6 +213,8 @@
     }
     [self setIsSelected:NO];
     objc_msgSend(_targetTouchUp, _actionTouchUp);
+    [analogp1LeftCenter removeFromParent];
+    posX = posY = 0;
 }
 
 @end
