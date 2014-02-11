@@ -26,7 +26,7 @@
 		3022A6C218A9B8D200880C8A /* Noise Attack.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6BD18A9B8D200880C8A /* Noise Attack.mp3 */; };
 		3022A6C318A9B8D200880C8A /* Ouroboros.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6BE18A9B8D200880C8A /* Ouroboros.mp3 */; };
 		3022A6C418A9B8D200880C8A /* pickup.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6BF18A9B8D200880C8A /* pickup.wav */; };
-		3022A6C518A9B8D200880C8A /* RetroFuture Dirty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6C018A9B8D200880C8A /* RetroFuture Dirty.mp3 */; };
+		3022A6C518A9B8D200880C8A /* RetroFutureDirty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6C018A9B8D200880C8A /* RetroFutureDirty.mp3 */; };
 		3022A6CF18A9BB9C00880C8A /* frame1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6C718A9BB9C00880C8A /* frame1.png */; };
 		3022A6D018A9BB9C00880C8A /* frame2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6C818A9BB9C00880C8A /* frame2.png */; };
 		3022A6D118A9BB9C00880C8A /* frame3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6C918A9BB9C00880C8A /* frame3.png */; };
@@ -35,6 +35,15 @@
 		3022A6D418A9BB9C00880C8A /* frame6.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6CC18A9BB9C00880C8A /* frame6.png */; };
 		3022A6D518A9BB9C00880C8A /* frame7.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6CD18A9BB9C00880C8A /* frame7.png */; };
 		3022A6D618A9BB9C00880C8A /* frame8.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6CE18A9BB9C00880C8A /* frame8.png */; };
+		3022A6D818A9C2B700880C8A /* title.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6D718A9C2B700880C8A /* title.png */; };
+		3022A6DB18A9C32F00880C8A /* creditsBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6D918A9C32F00880C8A /* creditsBtn.png */; };
+		3022A6DC18A9C32F00880C8A /* playBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6DA18A9C32F00880C8A /* playBtn.png */; };
+		3022A6DF18A9C4C800880C8A /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3022A6DE18A9C4C800880C8A /* Menu.m */; };
+		3022A6E118A9C4FD00880C8A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3022A6E018A9C4FD00880C8A /* AudioToolbox.framework */; };
+		3022A6E318A9C59400880C8A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3022A6E218A9C59400880C8A /* AVFoundation.framework */; };
+		3022A6E618A9C7D100880C8A /* menuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3022A6E518A9C7D100880C8A /* menuScene.m */; };
+		3022A6E918A9C95300880C8A /* GameOver.m in Sources */ = {isa = PBXBuildFile; fileRef = 3022A6E818A9C95300880C8A /* GameOver.m */; };
+		3022A6EC18A9C9E600880C8A /* FirstScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3022A6EB18A9C9E600880C8A /* FirstScene.m */; };
 		3079C23D18A1C02600A228E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3079C23C18A1C02600A228E2 /* Foundation.framework */; };
 		3079C23F18A1C02600A228E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3079C23E18A1C02600A228E2 /* CoreGraphics.framework */; };
 		3079C24118A1C02600A228E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3079C24018A1C02600A228E2 /* UIKit.framework */; };
@@ -86,7 +95,7 @@
 		3022A6BD18A9B8D200880C8A /* Noise Attack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Noise Attack.mp3"; sourceTree = "<group>"; };
 		3022A6BE18A9B8D200880C8A /* Ouroboros.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Ouroboros.mp3; sourceTree = "<group>"; };
 		3022A6BF18A9B8D200880C8A /* pickup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pickup.wav; sourceTree = "<group>"; };
-		3022A6C018A9B8D200880C8A /* RetroFuture Dirty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "RetroFuture Dirty.mp3"; sourceTree = "<group>"; };
+		3022A6C018A9B8D200880C8A /* RetroFutureDirty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = RetroFutureDirty.mp3; sourceTree = "<group>"; };
 		3022A6C718A9BB9C00880C8A /* frame1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame1.png; sourceTree = "<group>"; };
 		3022A6C818A9BB9C00880C8A /* frame2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame2.png; sourceTree = "<group>"; };
 		3022A6C918A9BB9C00880C8A /* frame3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame3.png; sourceTree = "<group>"; };
@@ -95,6 +104,19 @@
 		3022A6CC18A9BB9C00880C8A /* frame6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame6.png; sourceTree = "<group>"; };
 		3022A6CD18A9BB9C00880C8A /* frame7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame7.png; sourceTree = "<group>"; };
 		3022A6CE18A9BB9C00880C8A /* frame8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame8.png; sourceTree = "<group>"; };
+		3022A6D718A9C2B700880C8A /* title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title.png; sourceTree = "<group>"; };
+		3022A6D918A9C32F00880C8A /* creditsBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = creditsBtn.png; sourceTree = "<group>"; };
+		3022A6DA18A9C32F00880C8A /* playBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playBtn.png; sourceTree = "<group>"; };
+		3022A6DD18A9C4C800880C8A /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
+		3022A6DE18A9C4C800880C8A /* Menu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Menu.m; sourceTree = "<group>"; };
+		3022A6E018A9C4FD00880C8A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		3022A6E218A9C59400880C8A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		3022A6E418A9C7D100880C8A /* menuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menuScene.h; sourceTree = "<group>"; };
+		3022A6E518A9C7D100880C8A /* menuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = menuScene.m; sourceTree = "<group>"; };
+		3022A6E718A9C95300880C8A /* GameOver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOver.h; sourceTree = "<group>"; };
+		3022A6E818A9C95300880C8A /* GameOver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOver.m; sourceTree = "<group>"; };
+		3022A6EA18A9C9E600880C8A /* FirstScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstScene.h; sourceTree = "<group>"; };
+		3022A6EB18A9C9E600880C8A /* FirstScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstScene.m; sourceTree = "<group>"; };
 		3079C23918A1C02600A228E2 /* qoda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qoda.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3079C23C18A1C02600A228E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3079C23E18A1C02600A228E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -128,6 +150,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3022A6E318A9C59400880C8A /* AVFoundation.framework in Frameworks */,
+				3022A6E118A9C4FD00880C8A /* AudioToolbox.framework in Frameworks */,
 				3079C23F18A1C02600A228E2 /* CoreGraphics.framework in Frameworks */,
 				3079C24118A1C02600A228E2 /* UIKit.framework in Frameworks */,
 				3079C24318A1C02600A228E2 /* SpriteKit.framework in Frameworks */,
@@ -170,7 +194,7 @@
 				3022A6BD18A9B8D200880C8A /* Noise Attack.mp3 */,
 				3022A6BE18A9B8D200880C8A /* Ouroboros.mp3 */,
 				3022A6BF18A9B8D200880C8A /* pickup.wav */,
-				3022A6C018A9B8D200880C8A /* RetroFuture Dirty.mp3 */,
+				3022A6C018A9B8D200880C8A /* RetroFutureDirty.mp3 */,
 			);
 			name = music;
 			sourceTree = "<group>";
@@ -212,6 +236,8 @@
 		3079C23B18A1C02600A228E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3022A6E218A9C59400880C8A /* AVFoundation.framework */,
+				3022A6E018A9C4FD00880C8A /* AudioToolbox.framework */,
 				3079C23C18A1C02600A228E2 /* Foundation.framework */,
 				3079C23E18A1C02600A228E2 /* CoreGraphics.framework */,
 				3079C24018A1C02600A228E2 /* UIKit.framework */,
@@ -228,8 +254,16 @@
 				3079C24E18A1C02600A228E2 /* AppDelegate.m */,
 				3079C25018A1C02600A228E2 /* Main_iPhone.storyboard */,
 				3079C25318A1C02600A228E2 /* Main_iPad.storyboard */,
+				3022A6DD18A9C4C800880C8A /* Menu.h */,
+				3022A6DE18A9C4C800880C8A /* Menu.m */,
+				3022A6EA18A9C9E600880C8A /* FirstScene.h */,
+				3022A6EB18A9C9E600880C8A /* FirstScene.m */,
+				3022A6E718A9C95300880C8A /* GameOver.h */,
+				3022A6E818A9C95300880C8A /* GameOver.m */,
 				3079C25618A1C02600A228E2 /* ViewController.h */,
 				3079C25718A1C02600A228E2 /* ViewController.m */,
+				3022A6E418A9C7D100880C8A /* menuScene.h */,
+				3022A6E518A9C7D100880C8A /* menuScene.m */,
 				3079C25918A1C02600A228E2 /* MyScene.h */,
 				3079C25A18A1C02600A228E2 /* MyScene.m */,
 				3079C29318A1D60800A228E2 /* SKButton.h */,
@@ -244,6 +278,9 @@
 		3079C24518A1C02600A228E2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3022A6D718A9C2B700880C8A /* title.png */,
+				3022A6D918A9C32F00880C8A /* creditsBtn.png */,
+				3022A6DA18A9C32F00880C8A /* playBtn.png */,
 				3022A6BB18A9B8C500880C8A /* music */,
 				3022A6AA18A9B8B600880C8A /* sfx */,
 				3079C27E18A1CB0400A228E2 /* Sprites */,
@@ -366,6 +403,7 @@
 			files = (
 				3022A69818A4662D00880C8A /* center_circle.png in Resources */,
 				3022A6A318A93CB000880C8A /* bullet.png in Resources */,
+				3022A6DB18A9C32F00880C8A /* creditsBtn.png in Resources */,
 				3022A6C218A9B8D200880C8A /* Noise Attack.mp3 in Resources */,
 				3022A6D118A9BB9C00880C8A /* frame3.png in Resources */,
 				3022A69F18A47D0B00880C8A /* Mech2.png in Resources */,
@@ -382,6 +420,7 @@
 				3022A6C318A9B8D200880C8A /* Ouroboros.mp3 in Resources */,
 				3022A6D218A9BB9C00880C8A /* frame4.png in Resources */,
 				3022A6D018A9BB9C00880C8A /* frame2.png in Resources */,
+				3022A6D818A9C2B700880C8A /* title.png in Resources */,
 				3079C25518A1C02600A228E2 /* Main_iPad.storyboard in Resources */,
 				3022A6B618A9B8BE00880C8A /* hit.wav in Resources */,
 				3079C25218A1C02600A228E2 /* Main_iPhone.storyboard in Resources */,
@@ -390,8 +429,9 @@
 				3022A69B18A473B500880C8A /* floor.png in Resources */,
 				3022A69E18A47D0B00880C8A /* Mech1.png in Resources */,
 				3022A6D418A9BB9C00880C8A /* frame6.png in Resources */,
+				3022A6DC18A9C32F00880C8A /* playBtn.png in Resources */,
 				3022A6B518A9B8BE00880C8A /* fire2.wav in Resources */,
-				3022A6C518A9B8D200880C8A /* RetroFuture Dirty.mp3 in Resources */,
+				3022A6C518A9B8D200880C8A /* RetroFutureDirty.mp3 in Resources */,
 				3022A6CF18A9BB9C00880C8A /* frame1.png in Resources */,
 				3022A6B418A9B8BE00880C8A /* fire1.wav in Resources */,
 				3022A69918A4662D00880C8A /* out_circle.png in Resources */,
@@ -416,7 +456,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3079C25B18A1C02600A228E2 /* MyScene.m in Sources */,
+				3022A6EC18A9C9E600880C8A /* FirstScene.m in Sources */,
+				3022A6E618A9C7D100880C8A /* menuScene.m in Sources */,
 				3079C25818A1C02600A228E2 /* ViewController.m in Sources */,
+				3022A6E918A9C95300880C8A /* GameOver.m in Sources */,
+				3022A6DF18A9C4C800880C8A /* Menu.m in Sources */,
 				3079C24F18A1C02600A228E2 /* AppDelegate.m in Sources */,
 				3079C24B18A1C02600A228E2 /* main.m in Sources */,
 				3079C29518A1D60800A228E2 /* SKButton.m in Sources */,
