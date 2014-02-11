@@ -80,8 +80,11 @@ static const uint32_t shootCategory        =  0x1 << 2;
     float time;
     float timeShootP1;
     float timeShootP2;
-
- 
+    
+    bool gameOver;
+    SKLabelNode *overLbl;
+    
+    
 }
 
 
@@ -239,9 +242,10 @@ static const uint32_t shootCategory        =  0x1 << 2;
             
             
             SKSpriteNode * fireFlare = [SKSpriteNode spriteNodeWithImageNamed:@"fireFlare.png"];
-            fireFlare.size = CGSizeMake(64, 100);
+            fireFlare.size = CGSizeMake(64, 200);
             fireFlare.position = projectile.position;
             fireFlare.zPosition = 10;
+            
             [self addChild:fireFlare];
             
             [fireFlare runAction:[SKAction rotateToAngle:angle duration:0]];
@@ -326,6 +330,51 @@ static const uint32_t shootCategory        =  0x1 << 2;
     
     
 }
+-(void)hitMech:(SKNode*)mech withhp:(float)hp andShield:(float)shield{
+    if (shield>0) {
+        NSMutableArray *frames = [[NSMutableArray alloc]initWithCapacity:0];
+
+        for (int x = 1; x<=30; x++) {
+            SKTexture *texture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"frame%ds.png", x]];
+            [frames addObject:texture];
+        }
+        SKTexture *texture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"frame1s.png"]];
+        
+        
+        SKSpriteNode *shield = [SKSpriteNode spriteNodeWithTexture:texture];
+
+        shield.position = mech.position;
+        
+        SKAction *bum = [SKAction animateWithTextures:frames timePerFrame:0.02];
+        [shield runAction:[SKAction sequence:@[bum,
+                                               [SKAction fadeAlphaTo:0 duration:.0],
+                                               [SKAction removeFromParent]]]];
+
+        [self addChild:shield];
+        shield.zPosition = 6;
+    }else{
+        NSMutableArray *frames = [[NSMutableArray alloc]initWithCapacity:0];
+        
+        for (int x = 1; x<=39; x++) {
+            SKTexture *texture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"frame%df.png", x]];
+            [frames addObject:texture];
+        }
+        SKTexture *texture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"frame1f.png"]];
+        
+        
+        SKSpriteNode *shield = [SKSpriteNode spriteNodeWithTexture:texture];
+        
+        shield.position = mech.position;
+        
+        SKAction *bum = [SKAction animateWithTextures:frames timePerFrame:0.02];
+        [shield runAction:[SKAction sequence:@[bum,
+                                               [SKAction fadeAlphaTo:0 duration:.0],
+                                               [SKAction removeFromParent]]]];
+        
+        [self addChild:shield];
+        shield.zPosition = 6;
+    }
+}
 
 -(void)updateLbls{
     lblHPP1.text = [NSString stringWithFormat:@"HP: %d", hpp1];
@@ -335,6 +384,8 @@ static const uint32_t shootCategory        =  0x1 << 2;
     lblShieldP1.text = [NSString stringWithFormat:@"SHIELD: %d", shieldP1];
     
     lblShieldP2.text = [NSString stringWithFormat:@"SHIELD: %d", shieldP2];
+    
+    
     
 }
 
@@ -354,7 +405,75 @@ static const uint32_t shootCategory        =  0x1 << 2;
     
     [self updateLbls];
 
+    
+    
+    
+    if (hpp1<2 || hpp2<2) {
+        
+        
+        NSMutableArray *frames = [[NSMutableArray alloc]initWithCapacity:0];
+        
+        for (int x = 1; x<=39; x++) {
+            SKTexture *texture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"frame%df.png", x]];
+            [frames addObject:texture];
+        }
+        SKTexture *texture = [SKTexture textureWithImageNamed:[NSString stringWithFormat:@"frame1f.png"]];
+        
+        
+        SKSpriteNode *shield = [SKSpriteNode spriteNodeWithTexture:texture];
+        
+        
+        
+        
+        
+        
+        if (hpp1<0) {
+            shield.position = mech1.position;
+            [mech1 removeFromParent];
+            [legs removeFromParent];
+            overLbl.text = @"PLAYER 2 WINS!";
+        }else{
+            shield.position = mech2.position;
+            [mech2 removeFromParent];
+            [legs2 removeFromParent];
+            overLbl.text = @"PLAYER 1 WINS!";
+        }
+        overLbl = [SKLabelNode labelNodeWithFontNamed:@"Courier"];
+        lblHPP1.alpha=0;
+        lblHPP2.alpha=0;
+        lblShieldP1.alpha=0;
+        lblShieldP2.alpha=0;
+        overLbl.fontSize = 30;
+        overLbl.position = [self getPointFromScaleX:50 y:50];
+        if (hpp1!=M_PI) {
+            [self addChild:overLbl];
+            SKAction *oneRevolution = [SKAction rotateByAngle:-M_PI*2 duration: 5.0];
+            SKAction *repeat = [SKAction repeatActionForever:oneRevolution];
+            [overLbl runAction:repeat];
+
+            
+            SKAction *bum = [SKAction animateWithTextures:frames timePerFrame:0.02];
+            [shield runAction:[SKAction sequence:@[bum,
+                                                   [SKAction fadeAlphaTo:0 duration:.0],
+                                                   [SKAction removeFromParent]]]];
+            shield.size = CGSizeMake(300, 500);
+            [self addChild:shield];
+            shield.zPosition = 6;
+            [self performSelector:@selector(dismiss) withObject:nil afterDelay:3];
+         }
+        hpp1=M_PI;
+        hpp2=M_PI;
+        
+    
+    }else{
+        
+    }
+    
     /* Called before each frame is rendered */
+}
+
+-(void)dismiss{
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"dismiss" object:nil];
 }
 
 -(void)didMoveToView:(SKView *)view{
@@ -570,6 +689,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
     [self second];
     [self timeP1];
     [self timeP2];
+    
     [self runAction:[SKAction playSoundFileNamed:@"Exhilarate.mp3" waitForCompletion:NO]];
 
 }
@@ -589,19 +709,23 @@ static const uint32_t shootCategory        =  0x1 << 2;
 - (void)shoot:(SKNode *)shot didCollideWithMech:(SKNode *)mech {
     
     if (![shot.name isEqualToString:[@"bullet-" stringByAppendingString:mech.name]]) {
-        NSLog(@"Shot Hit Mech");
+    
         [shot removeFromParent];
         if (mech==mech1) {
+            [self hitMech:mech1 withhp:hpp1 andShield:shieldP1];
+            
             if (shieldP1>0) {
-                shieldP1--;
+                shieldP1-=10;
             }else{
-                hpp1--;
+                hpp1-=10;
             }
         }else{
+            [self hitMech:mech2 withhp:hpp2 andShield:shieldP2];
+            
             if (shieldP2>0) {
-                shieldP2--;
+                shieldP2-=10;
             }else{
-                hpp2--;
+                hpp2-=10;
             }
         }
     }
@@ -644,8 +768,6 @@ static const uint32_t shootCategory        =  0x1 << 2;
     
     if ((firstBody.categoryBitMask & mechCategory) != 0 && (secondBody.categoryBitMask & shootCategory) != 0)
     {
-        NSLog(@"METHOD 2");
-
         [self shoot:secondBody.node didCollideWithMech:firstBody.node];
     }
 

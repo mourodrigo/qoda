@@ -9,23 +9,31 @@
 #import "ViewController.h"
 #import "MyScene.h"
 
-@implementation ViewController
+@implementation ViewController{
+    SKScene *scene;
+    SKView * skView;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     // Configure the view.
-    SKView * skView = (SKView *)self.view;
+    skView = (SKView *)self.view;
     skView.showsFPS = YES;
     skView.showsNodeCount = YES;
     
     // Create and configure the scene.
-    SKScene * scene = [MyScene sceneWithSize:skView.bounds.size];
+    scene = [MyScene sceneWithSize:skView.bounds.size];
     scene.scaleMode = SKSceneScaleModeResizeFill;
     
     // Present the scene.
     [skView presentScene:scene];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dismiss)
+                                                 name:@"dismiss"
+                                               object:nil];
 }
 
 - (BOOL)shouldAutorotate
@@ -48,4 +56,9 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+-(void)dismiss{
+    [scene removeFromParent];
+    [skView removeFromSuperview];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 @end
