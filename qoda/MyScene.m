@@ -238,6 +238,17 @@ static const uint32_t shootCategory        =  0x1 << 2;
             projectile.physicsBody.collisionBitMask = 0; // 5
             
             
+            SKSpriteNode * fireFlare = [SKSpriteNode spriteNodeWithImageNamed:@"fireFlare.png"];
+            fireFlare.size = CGSizeMake(64, 100);
+            fireFlare.position = projectile.position;
+            fireFlare.zPosition = 10;
+            [self addChild:fireFlare];
+            
+            [fireFlare runAction:[SKAction rotateToAngle:angle duration:0]];
+            
+            [fireFlare runAction:[SKAction sequence:@[[SKAction waitForDuration:0],
+                                                      [SKAction fadeAlphaTo:0 duration:.1],
+                                                      [SKAction removeFromParent]]]];
             NSLog(@"timeShootP1 %f", timeShootP1);
             
 

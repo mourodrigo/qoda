@@ -44,6 +44,7 @@
 		3022A6E618A9C7D100880C8A /* menuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3022A6E518A9C7D100880C8A /* menuScene.m */; };
 		3022A6E918A9C95300880C8A /* GameOver.m in Sources */ = {isa = PBXBuildFile; fileRef = 3022A6E818A9C95300880C8A /* GameOver.m */; };
 		3022A6EC18A9C9E600880C8A /* FirstScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3022A6EB18A9C9E600880C8A /* FirstScene.m */; };
+		3022A6EF18A9CF5900880C8A /* fireFlare.png in Resources */ = {isa = PBXBuildFile; fileRef = 3022A6EE18A9CF5900880C8A /* fireFlare.png */; };
 		3079C23D18A1C02600A228E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3079C23C18A1C02600A228E2 /* Foundation.framework */; };
 		3079C23F18A1C02600A228E2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3079C23E18A1C02600A228E2 /* CoreGraphics.framework */; };
 		3079C24118A1C02600A228E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3079C24018A1C02600A228E2 /* UIKit.framework */; };
@@ -117,6 +118,7 @@
 		3022A6E818A9C95300880C8A /* GameOver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOver.m; sourceTree = "<group>"; };
 		3022A6EA18A9C9E600880C8A /* FirstScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstScene.h; sourceTree = "<group>"; };
 		3022A6EB18A9C9E600880C8A /* FirstScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstScene.m; sourceTree = "<group>"; };
+		3022A6EE18A9CF5900880C8A /* fireFlare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fireFlare.png; sourceTree = "<group>"; };
 		3079C23918A1C02600A228E2 /* qoda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qoda.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3079C23C18A1C02600A228E2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3079C23E18A1C02600A228E2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -212,6 +214,13 @@
 				3022A6CE18A9BB9C00880C8A /* frame8.png */,
 			);
 			name = walk;
+			sourceTree = "<group>";
+		};
+		3022A6ED18A9CDCD00880C8A /* fire */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = fire;
 			sourceTree = "<group>";
 		};
 		3079C23018A1C02600A228E2 = {
@@ -313,6 +322,7 @@
 		3079C27E18A1CB0400A228E2 /* Sprites */ = {
 			isa = PBXGroup;
 			children = (
+				3022A6ED18A9CDCD00880C8A /* fire */,
 				3022A6C618A9BB9200880C8A /* walk */,
 				3022A6A218A93CB000880C8A /* bullet.png */,
 				3022A69C18A47D0B00880C8A /* Mech1.png */,
@@ -321,6 +331,7 @@
 				3022A6A018A93AD300880C8A /* borders.png */,
 				3022A69618A4662D00880C8A /* center_circle.png */,
 				3022A69718A4662D00880C8A /* out_circle.png */,
+				3022A6EE18A9CF5900880C8A /* fireFlare.png */,
 			);
 			name = Sprites;
 			sourceTree = "<group>";
@@ -433,6 +444,7 @@
 				3022A6B518A9B8BE00880C8A /* fire2.wav in Resources */,
 				3022A6C518A9B8D200880C8A /* RetroFutureDirty.mp3 in Resources */,
 				3022A6CF18A9BB9C00880C8A /* frame1.png in Resources */,
+				3022A6EF18A9CF5900880C8A /* fireFlare.png in Resources */,
 				3022A6B418A9B8BE00880C8A /* fire1.wav in Resources */,
 				3022A69918A4662D00880C8A /* out_circle.png in Resources */,
 				3022A6D518A9BB9C00880C8A /* frame7.png in Resources */,
