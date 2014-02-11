@@ -26,7 +26,7 @@
 #define p2ControlRightY 90
 
 #define ControlDeadZone 20
-#define ControlAlpha 1
+#define ControlAlpha 0.7
 #define ControlCenterAlpha 1
 
 #define wallPositionX 3
@@ -36,6 +36,7 @@
 
 #define wallAlpha 0
 
+#define timeshoot = -5
 
 static const uint32_t borderCategory     =  0x1 << 0;
 static const uint32_t mechCategory        =  0x1 << 1;
@@ -73,7 +74,27 @@ static const uint32_t shootCategory        =  0x1 << 2;
     int shieldP1;
     int shieldP2;
     
+    float time;
+    float timeShootP1;
+    float timeShootP2;
 
+ 
+}
+
+
+-(void)second{
+    time = time+1;
+    [self performSelector:@selector(second) withObject:Nil afterDelay:1];
+}
+
+-(void)timeP1{
+    timeShootP1 = timeShootP1+0.1;
+    [self performSelector:@selector(timeP1) withObject:Nil afterDelay:0.1];
+}
+
+-(void)timeP2{
+    timeShootP2 = timeShootP2+0.1;
+    [self performSelector:@selector(timeP2) withObject:Nil afterDelay:0.1];
 }
 
 -(id)initWithSize:(CGSize)size {
@@ -87,148 +108,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
     return self;
 }
 
--(void)magicControllers:(NSSet*)touches withEvent:(UIEvent *)event{
-    
-    for (UITouch *touch in touches) {
-        CGPoint location = [touch locationInNode:self];
-        NSArray *nodes = [self nodesAtPoint:location];
-        // NSLog(@"nodes %@", nodes);
-        if (nodes.count>0) {
-            NSUInteger index;
-            /*
-            //===CONTROLE DOS BOTÕES
-            
-            //p1Left
-            index = [nodes indexOfObject:analogp1Left];
-            if (index!=NSNotFound) {
-                SKSpriteNode *node = [nodes objectAtIndex:index];
-                
-                index = [nodes indexOfObject:analogp1LeftCenter];
-                
-                
-                if (index!=NSNotFound) {
-                    SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
-                    
-                    float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
-                    if (distance<node.size.width*0.7) {
-                        nodeCenter.position = location;
-                        analogp1LeftCenterSelected = TRUE;
-                        
-                    }
-                }
-            }
-            
-            //p2Left
-            index = [nodes indexOfObject:analogp2Left];
-            if (index!=NSNotFound) {
-                SKSpriteNode *node = [nodes objectAtIndex:index];
-                
-                index = [nodes indexOfObject:analogp2LeftCenter];
-                
-                
-                if (index!=NSNotFound) {
-                    SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
-                    
-                    float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
-                    if (distance<node.size.width*0.7) {
-                        nodeCenter.position = location;
-                        analogp2LeftCenterSelected = TRUE;
-                        
-                    }
-                }
-            }
-            
-            //p1Right
-            index = [nodes indexOfObject:analogp1Right];
-            if (index!=NSNotFound) {
-                SKSpriteNode *node = [nodes objectAtIndex:index];
-                
-                index = [nodes indexOfObject:analogp1RightCenter];
-                
-                
-                if (index!=NSNotFound) {
-                    
-                    SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
-                    
-                    float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
-                    if (distance<node.size.width*0.7) {
-                        nodeCenter.position = location;
-                        analogp1RightCenterSelected = TRUE;
-                        
-                        // 2 - Set up initial location of projectile
-                        SKSpriteNode * projectile = [SKSpriteNode spriteNodeWithImageNamed:@"bullet"];
-                        projectile.position = mech1.position;
-                        projectile.position = CGPointMake(mech1.position.x, mech1.position.y+100);
-                        // 3- Determine offset of location to projectile
-                        CGPoint offset = rwSub(nodeCenter.position, node.position);
-                        
-                        // 4 - Bail out if you are shooting down or backwards
-                        if (offset.x <= 0) return;
-                        
-                        // 5 - OK to add now - we've double checked position
-                        [self addChild:projectile];
-                        NSLog(@"projectile");
-                        // 6 - Get the direction of where to shoot
-                        CGPoint direction = rwNormalize(offset);
-                        
-                        // 7 - Make it shoot far enough to be guaranteed off screen
-                        CGPoint shootAmount = rwMult(direction, 1000);
-                        
-                        // 8 - Add the shoot amount to the current position
-                        CGPoint realDest = rwAdd(shootAmount, projectile.position);
-                        
-                        // 9 - Create the actions
-                        float velocity = 480.0/1.0;
-                        float realMoveDuration = self.size.width / velocity;
-                        SKAction * actionMove = [SKAction moveTo:realDest duration:realMoveDuration];
-                        SKAction * actionMoveDone = [SKAction removeFromParent];
-                        [projectile runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
-                        
-                        projectile.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:projectile.size]; // 1
-                        projectile.physicsBody.dynamic = YES; // 2
-                        projectile.physicsBody.categoryBitMask = shootCategory; // 3
-                        projectile.physicsBody.contactTestBitMask = mechCategory; // 4
-                        projectile.physicsBody.collisionBitMask = 0; // 5
-                        
-                        
-                        
-                    }
-                }
-            }
-            
-            //p2Right
-            index = [nodes indexOfObject:analogp2Right];
-            if (index!=NSNotFound) {
-                SKSpriteNode *node = [nodes objectAtIndex:index];
-                
-                index = [nodes indexOfObject:analogp2RightCenter];
-                
-                
-                if (index!=NSNotFound) {
-                    SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
-                    
-                    float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
-                    if (distance<node.size.width*0.7) {
-                        nodeCenter.position = location;
-                        analogp2RightCenterSelected = TRUE;
-                        
-                    }
-                }
-            }
-            
-            
-    */
-            
-        }
-    }
-    
-    //    [self controlAnalogs];
-    
-    
-}
-
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    [self magicControllers:touches withEvent:event];
     
 }
 
@@ -273,15 +153,14 @@ static const uint32_t shootCategory        =  0x1 << 2;
     CGPoint point = Mech.position;
     bool movement = false;
     
-    NSLog(@"x %f y %f", control.posX, control.posY);
     
-    if (control.posX>ControlDeadZone || control.posX<ControlDeadZone) {
+    if (control.posX!=0) {
         point.x = Mech.position.x-(control.posX*mechStep);
         movement = true;
         
     }
     
-    if (control.posY>ControlDeadZone || control.posY<ControlDeadZone) {
+    if (control.posY!=0) {
         point.y = Mech.position.y+(control.posY*mechStep);
         movement = true;
         
@@ -295,30 +174,44 @@ static const uint32_t shootCategory        =  0x1 << 2;
         //  NSLog(@"ANGLE %f", angle);
         
         [Mech runAction:[SKAction rotateToAngle:angle duration:mechStepTime]];
-
-
-    
-    
         
+        bool shootit = false;
+        
+        if (timeShootP1>1) {
+            if (Mech==mech1) {
+                timeShootP1 = 0.5;
+                shootit = true;
+                [self runAction:[SKAction playSoundFileNamed:@"fire2.wav" waitForCompletion:NO]];
+
+            }
+        }
+        
+        if (timeShootP2>1) {
+            if (Mech==mech2) {
+                timeShootP2 = 0.5;
+                shootit = true;
+                [self runAction:[SKAction playSoundFileNamed:@"fire1.wav" waitForCompletion:NO]];
+
+            }
+        }
+            
+        if (shootit) {
             // 2 - Set up initial location of projectile
             SKSpriteNode * projectile = [SKSpriteNode spriteNodeWithImageNamed:@"bullet"];
             projectile.name = [@"bullet-" stringByAppendingString:Mech.name];
             projectile.position = Mech.position;
-
+            
             projectile.zPosition = 1;
             Mech.zPosition = 2;
             projectile.position = CGPointMake(Mech.position.x, Mech.position.y);
             // 3- Determine offset of location to projectile
             CGPoint offset = rwSub(control.position, CGPointMake(control.position.x-control.posX, control.position.y-control.posY));
-        
-            NSLog(@"OFFSET %f %f", offset.x, offset.y);
-        
+            
             // 4 - Bail out if you are shooting down or backwards
             if (offset.x == 0) return;
             
             // 5 - OK to add now - we've double checked position
             [self addChild:projectile];
-            NSLog(@"projectile");
             // 6 - Get the direction of where to shoot
             CGPoint direction = rwNormalize(offset);
             
@@ -341,11 +234,13 @@ static const uint32_t shootCategory        =  0x1 << 2;
             projectile.physicsBody.contactTestBitMask = mechCategory; // 4
             projectile.physicsBody.collisionBitMask = 0; // 5
             
+            
+            NSLog(@"timeShootP1 %f", timeShootP1);
+            
 
-    
-    
-    
-    
+        }
+        
+
     }
     
 }
@@ -414,8 +309,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
         
     }
     
-    [self magicControllers:touches withEvent:event];
-
+    
     
 }
 
@@ -435,7 +329,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
     [self controlMech:mech2 withControl:analogp2Right];
     [self controlShootWithMech:mech1 withControl:analogp1Right];
     [self controlShootWithMech:mech2 withControl:analogp2Left];
-
+    
     // [mech1 runAction:[mech1  actionForKey:[NSString stringWithFormat:@"moveMech%@", mech1.name]]];
    // [self controlMechShoot:mech1 withControl:analogp1Right andCenter:analogp1RightCenter];
 
@@ -475,12 +369,14 @@ static const uint32_t shootCategory        =  0x1 << 2;
     [analogp1Left setPosition:[self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY]];
     analogp1Left.size = CGSizeMake(analogSize, analogSize);
     analogp1Left.name = @"analogp1Left";
+    analogp1Left.alpha = ControlAlpha;
     [self addChild:analogp1Left];
 
     analogp1Right = [[SKButton alloc] initWithImageNamedNormal:@"out_circle" selected:@"out_circle"];
     [analogp1Right setPosition:[self getPointFromScaleX:p1ControlRightX y:p1ControlRightY]];
     analogp1Right.size = CGSizeMake(analogSize, analogSize);
     analogp1Right.name = @"analogp1Right";
+    analogp1Right.alpha = ControlAlpha;
 
     [self addChild:analogp1Right];
     
@@ -488,6 +384,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
     [analogp2Left setPosition:[self getPointFromScaleX:p2ControlLeftX y:p2ControlLeftY]];
     analogp2Left.size = CGSizeMake(analogSize, analogSize);
     analogp2Left.name = @"analogp2Left";
+    analogp2Left.alpha = ControlAlpha;
 
     [self addChild:analogp2Left];
     
@@ -495,6 +392,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
     [analogp2Right setPosition:[self getPointFromScaleX:p2ControlRightX y:p2ControlRightY]];
     analogp2Right.size = CGSizeMake(analogSize, analogSize);
     analogp2Right.name = @"analogp2Right";
+    analogp2Right.alpha = ControlAlpha;
 
     [self addChild:analogp2Right];
     
@@ -626,8 +524,11 @@ static const uint32_t shootCategory        =  0x1 << 2;
     
     
     
-    
-  
+    [self second];
+    [self timeP1];
+    [self timeP2];
+    [self runAction:[SKAction playSoundFileNamed:@"Exhilarate.mp3" waitForCompletion:NO]];
+
 }
 
 - (void)mech:(SKNode *)mech1 didCollideWithMech:(SKNode *)mech2 {
