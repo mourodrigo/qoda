@@ -147,6 +147,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
                 
                 
                 if (index!=NSNotFound) {
+                    
                     SKSpriteNode *nodeCenter = [nodes objectAtIndex:index];
                     
                     float distance = [self getDistanceBetween:nodeCenter.position and:node.position];
@@ -260,6 +261,8 @@ static const uint32_t shootCategory        =  0x1 << 2;
       //  NSLog(@"ANGLE %f", angle);
         
         [Mech runAction:[SKAction rotateToAngle:angle duration:mechStepTime]];
+        
+        
     }
     
     
@@ -293,7 +296,56 @@ static const uint32_t shootCategory        =  0x1 << 2;
         
         [Mech runAction:[SKAction rotateToAngle:angle duration:mechStepTime]];
 
-//        [Mech runAction:[SKAction moveTo:point duration:mechStepTime]];
+
+    
+    
+        
+            // 2 - Set up initial location of projectile
+            SKSpriteNode * projectile = [SKSpriteNode spriteNodeWithImageNamed:@"bullet"];
+            projectile.name = [@"bullet-" stringByAppendingString:Mech.name];
+            projectile.position = Mech.position;
+
+            projectile.zPosition = 1;
+            Mech.zPosition = 2;
+            projectile.position = CGPointMake(Mech.position.x, Mech.position.y);
+            // 3- Determine offset of location to projectile
+            CGPoint offset = rwSub(control.position, CGPointMake(control.position.x-control.posX, control.position.y-control.posY));
+        
+            NSLog(@"OFFSET %f %f", offset.x, offset.y);
+        
+            // 4 - Bail out if you are shooting down or backwards
+            if (offset.x == 0) return;
+            
+            // 5 - OK to add now - we've double checked position
+            [self addChild:projectile];
+            NSLog(@"projectile");
+            // 6 - Get the direction of where to shoot
+            CGPoint direction = rwNormalize(offset);
+            
+            // 7 - Make it shoot far enough to be guaranteed off screen
+            CGPoint shootAmount = rwMult(direction, 1000);
+            
+            // 8 - Add the shoot amount to the current position
+            CGPoint realDest = rwAdd(shootAmount, projectile.position);
+            
+            // 9 - Create the actions
+            float velocity = 480.0/1.0;
+            float realMoveDuration = self.size.width / velocity;
+            SKAction * actionMove = [SKAction moveTo:realDest duration:realMoveDuration];
+            SKAction * actionMoveDone = [SKAction removeFromParent];
+            [projectile runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
+            
+            projectile.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:projectile.size]; // 1
+            projectile.physicsBody.dynamic = YES; // 2
+            projectile.physicsBody.categoryBitMask = shootCategory; // 3
+            projectile.physicsBody.contactTestBitMask = mechCategory; // 4
+            projectile.physicsBody.collisionBitMask = 0; // 5
+            
+
+    
+    
+    
+    
     }
     
 }
@@ -447,71 +499,10 @@ static const uint32_t shootCategory        =  0x1 << 2;
     [self addChild:analogp2Right];
     
     
-    /*
-    analogp1Left = [SKSpriteNode spriteNodeWithTexture:texture_out_circle];
-    analogp1Left.position = [self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY];
-    analogp1Left.size = CGSizeMake(analogSize, analogSize);
-    analogp1Left.name = @"analogp1Left";
-    analogp1Left.alpha = ControlAlpha;
-    [self addChild:analogp1Left];
-
-    analogp1Right = [SKSpriteNode spriteNodeWithTexture:texture_out_circle];
-    analogp1Right.position = [self getPointFromScaleX:p1ControlRightX y:p1ControlRightY];
-    analogp1Right.size = CGSizeMake(analogSize, analogSize);
-    analogp1Right.name = @"analogp1Right";
-    analogp1Right.alpha = ControlAlpha;
-
-    [self addChild:analogp1Right];
-    
-    analogp2Left = [SKSpriteNode spriteNodeWithTexture:texture_out_circle];
-    analogp2Left.position = [self getPointFromScaleX:p2ControlLeftX y:p2ControlLeftY];
-    analogp2Left.size = CGSizeMake(analogSize, analogSize);
-    analogp2Left.name = @"analogp2Left";
-    analogp2Left.alpha = ControlAlpha;
-
-    [self addChild:analogp2Left];
-    
-    analogp2Right = [SKSpriteNode spriteNodeWithTexture:texture_out_circle];
-    analogp2Right.position = [self getPointFromScaleX:p2ControlRightX y:p2ControlRightY];
-    analogp2Right.size = CGSizeMake(analogSize, analogSize);
-    analogp2Right.name = @"analogp2Right";
-    analogp2Right.alpha = ControlAlpha;
-
-    [self addChild:analogp2Right];
     
     
-    analogp1LeftCenter = [SKSpriteNode spriteNodeWithTexture:texture_center_circle];
-    analogp1LeftCenter.position = [self getPointFromScaleX:p1ControlLeftX y:p1ControlLeftY];
-    analogp1LeftCenter.size = CGSizeMake(analogSize/2, analogSize/2);
-    analogp1LeftCenter.name = @"analogp1Left";
-    analogp1LeftCenter.alpha = ControlCenterAlpha;
-
-    [self addChild:analogp1LeftCenter];
     
-    analogp1RightCenter = [SKSpriteNode spriteNodeWithTexture:texture_center_circle];
-    analogp1RightCenter.position = [self getPointFromScaleX:p1ControlRightX y:p1ControlRightY];
-    analogp1RightCenter.size = CGSizeMake(analogSize/2, analogSize/2);
-    analogp1RightCenter.name = @"analogp1Right";
-    analogp1RightCenter.alpha = ControlCenterAlpha;
-
-    [self addChild:analogp1RightCenter];
     
-    analogp2LeftCenter = [SKSpriteNode spriteNodeWithTexture:texture_center_circle];
-    analogp2LeftCenter.position = [self getPointFromScaleX:p2ControlLeftX y:p2ControlLeftY];
-    analogp2LeftCenter.size = CGSizeMake(analogSize/2, analogSize/2);
-    analogp2LeftCenter.name = @"analogp2Left";
-    analogp2LeftCenter.alpha = ControlCenterAlpha;
-
-    [self addChild:analogp2LeftCenter];
-    
-    analogp2RightCenter = [SKSpriteNode spriteNodeWithTexture:texture_center_circle];
-    analogp2RightCenter.position = [self getPointFromScaleX:p2ControlRightX y:p2ControlRightY];
-    analogp2RightCenter.size = CGSizeMake(analogSize/2, analogSize/2);
-    analogp2RightCenter.name = @"analogp2Right";
-    analogp2RightCenter.alpha = ControlCenterAlpha;
-
-    [self addChild:analogp2RightCenter];
-    */
     SKTexture *mech1Texture = [SKTexture textureWithImageNamed:@"Mech1"];
     
     mech1 = [SKSpriteNode spriteNodeWithTexture:mech1Texture];
@@ -541,6 +532,12 @@ static const uint32_t shootCategory        =  0x1 << 2;
     mech2.physicsBody.contactTestBitMask = mechCategory; // 4
     mech2.physicsBody.collisionBitMask = 0; // 5
 
+    
+    
+    
+    
+    
+    
     wallLeft = [SKSpriteNode spriteNodeWithColor:[UIColor redColor] size:CGSizeMake(self.view.frame.size.width/wallWidth, self.view.frame.size.height)];
     wallLeft.position = [self getPointFromScaleX:wallPositionX y:50];
     wallLeft.alpha = wallAlpha;
@@ -585,6 +582,11 @@ static const uint32_t shootCategory        =  0x1 << 2;
     wallDown.physicsBody.contactTestBitMask = mechCategory; // 4
     wallDown.physicsBody.collisionBitMask = 0; // 5
     
+    
+    
+    
+    
+    
     lblHPP1 = [SKLabelNode labelNodeWithFontNamed:@"Courier"];
     
     lblHPP1.text = @"HP: 100";
@@ -621,6 +623,10 @@ static const uint32_t shootCategory        =  0x1 << 2;
     hpp1 = hpp2 = 100;
     shieldP1 = shieldP2 = hpp1;
     
+    
+    
+    
+    
   
 }
 
@@ -638,21 +644,25 @@ static const uint32_t shootCategory        =  0x1 << 2;
 
 - (void)shoot:(SKNode *)shot didCollideWithMech:(SKNode *)mech {
     
-    NSLog(@"Shot Hit Mech");
-    [shot removeFromParent];
-    if (mech==mech1) {
-        if (shieldP1>0) {
-            shieldP1--;
+    if (![shot.name isEqualToString:[@"bullet-" stringByAppendingString:mech.name]]) {
+        NSLog(@"Shot Hit Mech");
+        [shot removeFromParent];
+        if (mech==mech1) {
+            if (shieldP1>0) {
+                shieldP1--;
+            }else{
+                hpp1--;
+            }
         }else{
-            hpp1--;
-        }
-    }else{
-        if (shieldP2>0) {
-            shieldP2--;
-        }else{
-            hpp2--;
+            if (shieldP2>0) {
+                shieldP2--;
+            }else{
+                hpp2--;
+            }
         }
     }
+    
+    
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact

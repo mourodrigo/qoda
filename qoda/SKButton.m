@@ -4,9 +4,8 @@
 #define max 10
 
 @implementation SKButton{
-    SKSpriteNode *analogp1LeftCenter;
 }
-@synthesize posX, posY;
+@synthesize posX, posY, analogp1LeftCenter;
 #pragma mark Texture Initializer
 
 /**

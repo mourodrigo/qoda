@@ -17,6 +17,7 @@
 @property (nonatomic, readwrite, strong) SKTexture *normalTexture;
 @property (nonatomic, readwrite, strong) SKTexture *selectedTexture;
 @property (nonatomic, readwrite, strong) SKTexture *disabledTexture;
+@property (nonatomic, retain) SKSpriteNode *analogp1LeftCenter;
 
 - (id)initWithTextureNormal:(SKTexture *)normal selected:(SKTexture *)selected;
 - (id)initWithTextureNormal:(SKTexture *)normal selected:(SKTexture *)selected disabled:(SKTexture *)disabled; // Designated Initializer
