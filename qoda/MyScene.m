@@ -68,6 +68,9 @@ static const uint32_t shootCategory        =  0x1 << 2;
     SKLabelNode *lblShieldP1;
     SKLabelNode *lblShieldP2;
     
+    SKSpriteNode *legs;
+    SKSpriteNode *legs2;
+    
     int hpp1;
     int hpp2;
 
@@ -201,8 +204,8 @@ static const uint32_t shootCategory        =  0x1 << 2;
             projectile.name = [@"bullet-" stringByAppendingString:Mech.name];
             projectile.position = Mech.position;
             
-            projectile.zPosition = 1;
-            Mech.zPosition = 2;
+            projectile.zPosition = 2;
+            Mech.zPosition = 5;
             projectile.position = CGPointMake(Mech.position.x, Mech.position.y);
             // 3- Determine offset of location to projectile
             CGPoint offset = rwSub(control.position, CGPointMake(control.position.x-control.posX, control.position.y-control.posY));
@@ -333,7 +336,10 @@ static const uint32_t shootCategory        =  0x1 << 2;
     // [mech1 runAction:[mech1  actionForKey:[NSString stringWithFormat:@"moveMech%@", mech1.name]]];
    // [self controlMechShoot:mech1 withControl:analogp1Right andCenter:analogp1RightCenter];
 
-
+    legs.position = mech1.position;
+    
+    legs2.position = mech2.position;
+    
     
     [self updateLbls];
 
@@ -407,6 +413,7 @@ static const uint32_t shootCategory        =  0x1 << 2;
     mech1.position = [self getPointFromScaleX:50 y:p1ControlLeftY+10];
     mech1.size = CGSizeMake(mechSizeWidth, mechSizeHeight);
     mech1.name = @"mech1";
+    mech1.zPosition = 10;
     [self addChild:mech1];
     
     mech1.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:mech1.size]; // 1
@@ -422,6 +429,8 @@ static const uint32_t shootCategory        =  0x1 << 2;
     mech2.position = [self getPointFromScaleX:50 y:p2ControlLeftY-10];
     mech2.size = CGSizeMake(mechSizeWidth, mechSizeHeight);
     mech2.name = @"mech2";
+    mech2.zPosition = 10;
+
     [self addChild:mech2];
 
     mech2.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:mech2.size]; // 1
@@ -522,6 +531,29 @@ static const uint32_t shootCategory        =  0x1 << 2;
     shieldP1 = shieldP2 = hpp1;
     
     
+    SKTexture *texture1 = [SKTexture textureWithImageNamed:@"frame1"];
+    SKTexture *texture2 = [SKTexture textureWithImageNamed:@"frame2"];
+    SKTexture *texture3 = [SKTexture textureWithImageNamed:@"frame3"];
+    SKTexture *texture4 = [SKTexture textureWithImageNamed:@"frame4"];
+    SKTexture *texture5 = [SKTexture textureWithImageNamed:@"frame5"];
+    SKTexture *texture6 = [SKTexture textureWithImageNamed:@"frame6"];
+    SKTexture *texture7 = [SKTexture textureWithImageNamed:@"frame7"];
+    SKTexture *texture8 = [SKTexture textureWithImageNamed:@"frame8"];
+    
+    legs = [SKSpriteNode spriteNodeWithTexture:texture1];
+    legs.position = mech1.position;
+    
+    SKAction *walk = [SKAction animateWithTextures:@[texture1,texture2,texture3,texture4,texture5,texture6,texture7,texture8] timePerFrame:.05];
+    [legs runAction:[SKAction repeatActionForever:walk] withKey:@"walk"];
+    [self addChild:legs];
+    legs.zPosition = 4;
+    
+    legs2 = [SKSpriteNode spriteNodeWithTexture:texture1];
+    legs2.position = mech2.position;
+    
+    [legs2 runAction:[SKAction repeatActionForever:walk] withKey:@"walk"];
+    [self addChild:legs2];
+    legs2.zPosition = 4;
     
     
     [self second];
